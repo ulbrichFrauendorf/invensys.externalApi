@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AF440EFC-CC5A-447A-BFD8-0A497B8A3CED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FF43C4FB-522B-4F1F-9A42-A16C8034C738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invensys.ExternalApi.Common", "src\Invensys.ExternalApi.Common\Invensys.ExternalApi.Common.csproj", "{E7582011-80C7-4E7A-A462-0EC12834ED0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{C40F5CB1-F834-4F26-8ABB-31D1961FC33D}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7582011-80C7-4E7A-A462-0EC12834ED0A} = {AF440EFC-CC5A-447A-BFD8-0A497B8A3CED}
+	EndGlobalSection
+EndGlobal
