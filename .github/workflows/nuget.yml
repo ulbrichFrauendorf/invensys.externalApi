@@ -3,7 +3,7 @@ name: ftp integra-flow deploy
 on:
   workflow_dispatch:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - '.scripts/**'
       - .gitignore
