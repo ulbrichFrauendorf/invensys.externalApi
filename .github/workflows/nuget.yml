@@ -1,0 +1,51 @@
+name: ftp integra-flow deploy
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '.scripts/**'
+      - .gitignore
+      - CODE_OF_CONDUCT.md
+      - LICENSE
+      - README.md
+    types:
+      - closed
+
+  workflow_call:
+    inputs:
+      build-artifacts:
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Pack project
+        run: dotnet pack --configuration Release --no-restore --output ./nupkg
+
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
