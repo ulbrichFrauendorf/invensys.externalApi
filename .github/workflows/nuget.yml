@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Extract version from branch name
+        run: echo "VERSION=${GITHUB_REF#refs/heads/release/v}" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -36,16 +39,29 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build project
+      - name: Update version in all .csproj files
+        run: |
+          for csproj in $(find . -name "*.csproj"); do
+            sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' "$csproj"
+          done
+
+      - name: Build projects
         run: dotnet build --configuration Release --no-restore
 
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
 
-      - name: Pack project
-        run: dotnet pack --configuration Release --no-restore --output ./nupkg
+      - name: Pack all projects separately
+        run: |
+          mkdir -p ./nupkg
+          for csproj in $(find . -name "*.csproj"); do
+            dotnet pack "$csproj" --configuration Release --no-restore --output ./nupkg
+          done
 
-      - name: Publish to NuGet
+      - name: Publish each NuGet package
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push ./nupkg/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+        run: |
+          for package in ./nupkg/*.nupkg; do
+            dotnet nuget push "$package" --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
