@@ -1,12 +1,12 @@
-﻿using System.Net;
+﻿using Ardalis.GuardClauses;
+using Invensys.ExternalApi.Common.Authentication;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Exceptions;
+using Invensys.ExternalApi.Common.Http.Models.Enums;
+using System.Net;
 using System.Net.Http.Json;
-using Ardalis.GuardClauses;
-using Invensys.Api.Common.Authentication;
-using Invensys.Api.Common.Authentication.Models.Request;
-using Invensys.Api.Common.Exceptions;
-using Invensys.Api.Common.Http.Models.Enums;
 
-namespace Invensys.Api.Common.Http;
+namespace Invensys.ExternalApi.Common.Http;
 
 /// <summary>
 /// Provides methods to get an authenticated HttpClient.

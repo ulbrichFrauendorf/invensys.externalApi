@@ -1,4 +1,4 @@
-﻿namespace Invensys.Api.Common.Authentication.Models.Result;
+﻿namespace Invensys.ExternalApi.Common.Authentication.Models.Result;
 
 public class AuthenticationResult
 {

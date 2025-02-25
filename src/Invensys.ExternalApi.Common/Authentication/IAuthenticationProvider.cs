@@ -1,7 +1,7 @@
-﻿using Invensys.Api.Common.Authentication.Models.Request;
-using Invensys.Api.Common.Authentication.Models.Result;
+﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Result;
 
-namespace Invensys.Api.Common.Authentication;
+namespace Invensys.ExternalApi.Common.Authentication;
 
 public interface IAuthenticationProvider
 {

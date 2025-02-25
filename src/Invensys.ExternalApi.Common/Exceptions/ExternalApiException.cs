@@ -1,4 +1,4 @@
-﻿namespace Invensys.Api.Common.Exceptions;
+﻿namespace Invensys.ExternalApi.Common.Exceptions;
 
 /// <summary>
 /// Represents an exception that occurs when calling an external API.

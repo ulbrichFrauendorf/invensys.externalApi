@@ -1,3 +1,3 @@
-﻿namespace Invensys.Api.Common.Authentication.Models.Request;
+﻿namespace Invensys.ExternalApi.Common.Authentication.Models.Request;
 
 public class AccessTokenRequest;

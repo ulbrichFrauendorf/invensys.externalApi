@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{C4
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{59A0C8B2-20D8-48FE-9647-35719A6F4CC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invensys.ExternalApi.UnitTests", "tests\Invensys.ExternalApi.UnitTests\Invensys.ExternalApi.UnitTests.csproj", "{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,16 +31,16 @@ Global
 		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7582011-80C7-4E7A-A462-0EC12834ED0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59A0C8B2-20D8-48FE-9647-35719A6F4CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59A0C8B2-20D8-48FE-9647-35719A6F4CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59A0C8B2-20D8-48FE-9647-35719A6F4CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59A0C8B2-20D8-48FE-9647-35719A6F4CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E7582011-80C7-4E7A-A462-0EC12834ED0A} = {AF440EFC-CC5A-447A-BFD8-0A497B8A3CED}
-		{59A0C8B2-20D8-48FE-9647-35719A6F4CC9} = {FF43C4FB-522B-4F1F-9A42-A16C8034C738}
+		{DDFEF9AB-BF65-4FE6-A94B-02AC6BF72392} = {FF43C4FB-522B-4F1F-9A42-A16C8034C738}
 	EndGlobalSection
 EndGlobal
