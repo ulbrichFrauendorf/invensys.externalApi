@@ -28,7 +28,7 @@ public class ExternalApiClient
       _tokenAppendType = tokenAppendType;
    }
 
-   protected async Task<T> SendRequestWithAuthRetry<T>(JwtAccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
+   protected async Task<T> SendRequestWithAuthRetry<T>(AccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
    {
       await AuthenticateHttpClient(accessTokenRequest);
 
