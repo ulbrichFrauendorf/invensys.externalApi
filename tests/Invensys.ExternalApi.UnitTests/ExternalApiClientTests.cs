@@ -131,7 +131,7 @@ public class ExternalApiClientTests
       {
       }
 
-      public new async Task<T> SendRequestWithAuthRetry<T>(JwtAccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
+      public new async Task<T> SendRequestWithAuthRetry<T>(AccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
       {
          return await base.SendRequestWithAuthRetry<T>(accessTokenRequest, requestFunc);
       }
