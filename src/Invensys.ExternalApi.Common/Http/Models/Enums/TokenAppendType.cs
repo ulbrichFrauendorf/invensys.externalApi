@@ -1,4 +1,4 @@
-﻿namespace Invensys.Api.Common.Http.Models.Enums;
+﻿namespace Invensys.ExternalApi.Common.Http.Models.Enums;
 
 public enum TokenAppendType
 {

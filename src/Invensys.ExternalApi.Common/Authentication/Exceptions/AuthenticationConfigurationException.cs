@@ -1,4 +1,4 @@
-﻿namespace Invensys.Api.Common.Authentication.Exceptions;
+﻿namespace Invensys.ExternalApi.Common.Authentication.Exceptions;
 
 /// <summary>
 /// Exception thrown when there is a configuration error in authentication.

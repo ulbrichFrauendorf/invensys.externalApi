@@ -1,8 +1,8 @@
 ﻿using Ardalis.GuardClauses;
-using Invensys.Api.Common.Authentication.Models.Request;
-using Invensys.Api.Common.Authentication.Models.Result;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Result;
 
-namespace Invensys.Api.Common.Authentication;
+namespace Invensys.ExternalApi.Common.Authentication;
 
 /// <summary>
 /// Abstract class representing an authentication provider.
@@ -19,9 +19,7 @@ public abstract class AuthenticationProvider<T>(IHttpClientFactory httpClientFac
    public async Task<AuthenticationResult<T>> GetAuthenticationResult(AccessTokenRequest accessTokenRequest, bool forceRefresh = false)
    {
       if (ShouldRefreshToken(forceRefresh))
-      {
          _authenticationResult = await Authenticate(accessTokenRequest);
-      }
 
       Guard.Against.Null(_authenticationResult, nameof(_authenticationResult));
 

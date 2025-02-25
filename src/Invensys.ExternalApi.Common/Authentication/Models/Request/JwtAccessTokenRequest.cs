@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Invensys.Api.Common.Authentication.Models.Request;
+namespace Invensys.ExternalApi.Common.Authentication.Models.Request;
 
 /// <summary>
 /// Represents a JWT access token request.
