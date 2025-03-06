@@ -4,6 +4,7 @@ using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Exceptions;
 using Invensys.ExternalApi.Common.Http.Models.Enums;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.Common.Http;
@@ -97,10 +98,16 @@ public class ExternalApiClient
       _httpClient.BaseAddress = uriBuilder.Uri;
    }
 
-   private void AppendTokenToHeader(string tokenString, string tokenPrefix)
-   {
-      _httpClient.DefaultRequestHeaders.Clear();
-
-      _httpClient.DefaultRequestHeaders.Add(tokenPrefix, tokenString);
-   }
+    private void AppendTokenToHeader(string tokenString, string tokenPrefix)
+    {
+        if (tokenPrefix.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase));
+        }
+        else
+        {
+            _httpClient.DefaultRequestHeaders.Remove(tokenPrefix); // Ensure no duplicate
+            _httpClient.DefaultRequestHeaders.Add(tokenPrefix, tokenString);
+        }
+    }
 }
