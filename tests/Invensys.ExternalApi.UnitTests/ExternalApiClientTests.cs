@@ -97,7 +97,7 @@ public class ExternalApiClientTests
 
       // Assert
       _httpClient.DefaultRequestHeaders.Authorization.Should().NotBeNull();
-      _httpClient.DefaultRequestHeaders.Authorization!.Scheme.Should().Be("bearer");
+      _httpClient.DefaultRequestHeaders.Authorization!.Scheme.Should().Be("Bearer");
       _httpClient.DefaultRequestHeaders.Authorization.Parameter.Should().Be("test_token");
    }
 
@@ -145,24 +145,24 @@ public class ExternalApiClientTests
 
 public static class HttpMessageHandlerExtensions
 {
-   public static Mock<HttpMessageHandler> SetupRequest(
-       this Mock<HttpMessageHandler> mockHandler, HttpMethod method, string requestUri, HttpResponseMessage response)
-   {
-      mockHandler
-          .Protected()
-          .Setup<Task<HttpResponseMessage>>(
-              "SendAsync",
-              ItExpr.Is<HttpRequestMessage>(req =>
-                  req.Method == method &&
-                  req.RequestUri!.ToString() == requestUri &&
-                  req.Headers.Authorization != null &&
-                  req.Headers.Authorization.Scheme == "bearer" &&
-                  req.Headers.Authorization.Parameter == "test_token"),
-              ItExpr.IsAny<CancellationToken>())
-          .ReturnsAsync(response);
+    public static Mock<HttpMessageHandler> SetupRequest(
+        this Mock<HttpMessageHandler> mockHandler, HttpMethod method, string requestUri, HttpResponseMessage response)
+    {
+        mockHandler
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == method &&
+                    req.RequestUri!.ToString() == requestUri &&
+                    req.Headers.Authorization != null &&
+                    req.Headers.Authorization.Scheme == "Bearer" && // Match the exact case
+                    req.Headers.Authorization.Parameter == "test_token"),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(response);
 
-      return mockHandler;
-   }
+        return mockHandler;
+    }
 }
 
 public class TestData
