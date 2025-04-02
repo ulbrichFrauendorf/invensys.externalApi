@@ -1,17 +1,9 @@
-name: nuget deploy
+name: Build and Publish NuGet Package
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*'
-
-  workflow_call:
-    inputs:
-      build-artifacts:
-        type: boolean
-        required: true
-        default: false
+      - "v*.*.*"  # Trigger only on version tags (e.g., v1.1.0)
 
 jobs:
   publish:
@@ -20,7 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Extract version from tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
@@ -34,24 +26,24 @@ jobs:
 
       - name: Update version in all .csproj files
         run: |
-          for csproj in $(find . -name "*.csproj"); do
+          for csproj in $(find . -name '*.csproj'); do
             sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' "$csproj"
           done
 
-      - name: Build projects
+      - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
 
-      - name: Pack all projects separately
+      - name: Pack NuGet packages
         run: |
           mkdir -p ./nupkg
-          for csproj in $(find . -name "*.csproj"); do
+          for csproj in $(find . -name '*.csproj'); do
             dotnet pack "$csproj" --configuration Release --no-restore --output ./nupkg
           done
 
-      - name: Publish each NuGet package
+      - name: Publish to NuGet
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
