@@ -33,8 +33,6 @@ public static class DependencyInjection
          .AddPolicyHandler(RateLimitPolicy)
          .AddHttpMessageHandler(() => new RateLimitingHandler(50, 30));
 
-      services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
       //Core
       services.AddTransient<IPaySpaceAuthenticationProvider, PaySpaceAuthenticationProvider>(); //Implements IAuthenticationProvider<GroupCompany[]> From Api common
       services.AddTransient<IPaySpaceApiClient, PaySpaceApiClient>();

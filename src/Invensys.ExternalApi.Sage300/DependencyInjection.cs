@@ -19,8 +19,6 @@ public static class DependencyInjection
          .AddPolicyHandler(RateLimitPolicy)
          .AddHttpMessageHandler(() => new RateLimitingHandler(10, 100));
 
-      services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
       //Core
       services.AddTransient<ISage300AuthenticationProvider, Sage300AuthenticationProvider>(); //Implements IAuthenticationProvider<GroupCompany[]> From Api common
       services.AddTransient<ISage300ApiClient, Sage300ApiClient>();
