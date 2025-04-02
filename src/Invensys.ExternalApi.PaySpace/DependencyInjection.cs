@@ -27,6 +27,8 @@ public static class DependencyInjection
            .AddPolicyHandler(RateLimitPolicy)
            .AddHttpMessageHandler(() => new RateLimitingHandler(50, 30));
 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
         //Core
         services.AddTransient<IPaySpaceAuthenticationProvider, PaySpaceAuthenticationProvider>(); //Implements IAuthenticationProvider<GroupCompany[]> From Api common
         services.AddTransient<IPaySpaceApiClient, PaySpaceApiClient>();
@@ -38,18 +40,8 @@ public static class DependencyInjection
         services.AddTransient<IPaySpaceIncidentApi, PaySpaceIncidentApi>();
         services.AddTransient<IPaySpaceLoanApi, PaySpaceLoanApi>();
         services.AddTransient<IPaySpacePayrollProcessingApi, PaySpacePayrollProcessingApi>();
-
         services.AddTransient<IPaySpaceApiContext, PaySpaceApiContext>();
         services.AddTransient<IPaySpaceApiAuthenticationService, PaySpaceApiAuthenticationService>();
-
-        // Manually configure AutoMapper
-        var mapperConfig = new MapperConfiguration(cfg =>
-        {
-            cfg.AddMaps(Assembly.GetExecutingAssembly());
-        });
-
-        IMapper mapper = mapperConfig.CreateMapper();
-        services.AddSingleton(mapper);
 
         return services;
     }
