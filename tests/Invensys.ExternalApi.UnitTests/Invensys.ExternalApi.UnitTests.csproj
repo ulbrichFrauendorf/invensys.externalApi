@@ -25,6 +25,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Invensys.ExternalApi.Common\Invensys.ExternalApi.Common.csproj" />
+    <ProjectReference Include="..\..\src\Invensys.ExternalApi.PaySpace\Invensys.ExternalApi.PaySpace.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PaySpace\" />
   </ItemGroup>
 
 </Project>
