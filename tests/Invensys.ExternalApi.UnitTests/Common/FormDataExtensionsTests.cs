@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json.Serialization;
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Http.Extensions;
 using NUnit.Framework;
+using System.Text.Json.Serialization;
 
 namespace Invensys.ExternalApi.UnitTests.Common
 {

@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using Invensys.ExternalApi.PaySpace.Entities.Company;
+﻿using Invensys.ExternalApi.PaySpace.Entities.Company;
+using System.Text.Json.Serialization;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Authentication.Models;
 

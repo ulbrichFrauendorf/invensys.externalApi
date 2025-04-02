@@ -2,6 +2,6 @@
 
 public enum HeaderType
 {
-   Authorization,
-   Cookie
+    Authorization,
+    Cookie
 }

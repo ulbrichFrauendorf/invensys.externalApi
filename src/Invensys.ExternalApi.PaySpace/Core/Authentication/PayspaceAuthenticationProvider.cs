@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Reflection;
-using System.Text.Json.Serialization;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using Invensys.ExternalApi.Common.Authentication;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Models.Result;
@@ -12,6 +9,7 @@ using Invensys.ExternalApi.PaySpace.Core.Configuration;
 using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Authentication;
 

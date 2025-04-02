@@ -1,5 +1,4 @@
 ﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core;
 using Invensys.ExternalApi.PaySpace.Entities.FixedInfo;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 

@@ -5,9 +5,6 @@ using Invensys.ExternalApi.PaySpace.Entities.FixedInfo;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Invensys.ExternalApi.UnitTests.PaySpace
 {

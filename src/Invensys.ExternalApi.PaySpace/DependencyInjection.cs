@@ -1,7 +1,4 @@
-﻿using System.Net;
-using System.Reflection;
-using Ardalis.GuardClauses;
-using AutoMapper;
+﻿using Ardalis.GuardClauses;
 using Invensys.ExternalApi.PaySpace.Core;
 using Invensys.ExternalApi.PaySpace.Core.Apis;
 using Invensys.ExternalApi.PaySpace.Core.Authentication;
@@ -12,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
+using System.Net;
+using System.Reflection;
 
 namespace Invensys.ExternalApi.PaySpace;
 

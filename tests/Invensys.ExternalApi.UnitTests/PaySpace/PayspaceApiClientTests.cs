@@ -1,4 +1,3 @@
-using System.Net;
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Odata;
@@ -7,6 +6,7 @@ using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using System.Net;
 using System.Text.Json;
 
 namespace Invensys.ExternalApi.UnitTests.PaySpace
@@ -48,7 +48,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
         public async Task GetAsync_ShouldReturnData()
         {
             var url = "https://api.payspace.com/data";
-            var expectedData = new Data{ Id = 1, Name = "Test" };
+            var expectedData = new Data { Id = 1, Name = "Test" };
 
             _httpMessageHandlerMock
                 .Protected()

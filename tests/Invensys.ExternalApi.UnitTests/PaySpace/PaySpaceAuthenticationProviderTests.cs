@@ -1,22 +1,14 @@
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Authentication;
+using Invensys.ExternalApi.PaySpace.Core.Authentication.Models;
+using Invensys.ExternalApi.PaySpace.Entities.Company;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-using Microsoft.Extensions.Configuration;
-using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.Common.Authentication.Models.Result;
-using Invensys.ExternalApi.PaySpace.Core.Authentication.Models;
-using Invensys.ExternalApi.PaySpace.Core.Configuration;
-using Invensys.ExternalApi.PaySpace.Entities.Company;
-using Invensys.ExternalApi.PaySpace.Interfaces;
-using Invensys.ExternalApi.Common.Authentication;
-using System.Text.Json;
-using System.Security.AccessControl;
-using Invensys.ExternalApi.PaySpace.Core.Authentication;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.UnitTests.PaySpace
 {
