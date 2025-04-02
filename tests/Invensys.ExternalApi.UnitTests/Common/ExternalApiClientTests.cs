@@ -10,7 +10,7 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace Invensys.ExternalApi.UnitTests;
+namespace Invensys.ExternalApi.UnitTests.Common;
 
 [TestFixture]
 public class ExternalApiClientTests
@@ -118,6 +118,7 @@ public class ExternalApiClientTests
       // Assert
       _httpClient.BaseAddress.Query.Should().Contain("Authorization=bearer%20test_token");
    }
+
    [TearDown]
    public void TearDown()
    {

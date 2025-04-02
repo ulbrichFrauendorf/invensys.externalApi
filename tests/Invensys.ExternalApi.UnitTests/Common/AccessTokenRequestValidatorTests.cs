@@ -4,7 +4,7 @@ using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Validators;
 using NUnit.Framework;
 
-namespace Invensys.ExternalApi.UnitTests;
+namespace Invensys.ExternalApi.UnitTests.Common;
 
 [TestFixture]
 public class AccessTokenRequestValidatorTests

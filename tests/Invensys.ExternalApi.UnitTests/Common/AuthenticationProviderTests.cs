@@ -5,7 +5,7 @@ using Invensys.ExternalApi.Common.Authentication.Models.Result;
 using Moq;
 using NUnit.Framework;
 
-namespace Invensys.ExternalApi.UnitTests;
+namespace Invensys.ExternalApi.UnitTests.Common;
 
 public class AuthenticationProviderTests
 {
