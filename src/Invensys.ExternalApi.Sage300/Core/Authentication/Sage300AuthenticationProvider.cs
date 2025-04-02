@@ -5,11 +5,11 @@ using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Models.Result;
 using Invensys.ExternalApi.Common.Authentication.Validators;
 using Invensys.ExternalApi.Common.Http.Extensions;
+using Invensys.ExternalApi.Sage300.Core.Authentication.Models.Response;
 using Invensys.ExternalApi.Sage300.Core.Models.Request;
-using Invensys.ExternalApi.Sage300.Core.Models.Response;
 using Invensys.ExternalApi.Sage300.Interfaces;
 
-namespace Invensys.ExternalApi.Sage300.Core;
+namespace Invensys.ExternalApi.Sage300.Core.Authentication;
 
 public class Sage300AuthenticationProvider(IHttpClientFactory httpClientFactory)
    : AuthenticationProvider<object[]>(httpClientFactory),
@@ -32,9 +32,7 @@ public class Sage300AuthenticationProvider(IHttpClientFactory httpClientFactory)
       var cookieToken = string.Empty;
 
       if (response.Headers.TryGetValues("set-cookie", out var values))
-      {
          cookieToken = values.First();
-      }
 
       var authResult = new AuthenticationResult<object[]>();
 

@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Reflection;
 using Invensys.ExternalApi.Sage300.Core;
+using Invensys.ExternalApi.Sage300.Core.Authentication;
+using Invensys.ExternalApi.Sage300.Core.Configuration;
 using Invensys.ExternalApi.Sage300.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;

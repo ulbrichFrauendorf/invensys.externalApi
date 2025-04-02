@@ -1,5 +1,6 @@
 ﻿using Invensys.ExternalApi.Common.Http;
 using Invensys.ExternalApi.Common.Http.Models.Enums;
+using Invensys.ExternalApi.Sage300.Core.Configuration;
 using Invensys.ExternalApi.Sage300.Core.Models.Request;
 using Invensys.ExternalApi.Sage300.Interfaces;
 
