@@ -2,7 +2,7 @@
 
 public enum TokenAppendType
 {
-    None,
-    Query,
-    Header
+   None,
+   Query,
+   Header
 }

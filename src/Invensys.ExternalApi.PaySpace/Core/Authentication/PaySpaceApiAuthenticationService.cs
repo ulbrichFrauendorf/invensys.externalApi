@@ -10,26 +10,31 @@ public class PaySpaceApiAuthenticationService(
    IPaySpaceLookupApi payspaceLookupApi
 ) : IPaySpaceApiAuthenticationService
 {
-    public async Task<PaySpaceAuthorizationResponse> Authenticate(JwtAccessTokenRequest accessTokenRequest)
-    {
-        Guard.Against.Null(accessTokenRequest, nameof(accessTokenRequest));
+   public async Task<PaySpaceAuthorizationResponse> Authenticate(JwtAccessTokenRequest accessTokenRequest)
+   {
+      Guard.Against.Null(accessTokenRequest, nameof(accessTokenRequest));
 
-        var authenticationResult = await payspaceAuthenticationProvider.GetAuthenticationResult(accessTokenRequest);
+      var authenticationResult = await payspaceAuthenticationProvider.GetAuthenticationResult(accessTokenRequest);
 
-        var accessToken = await payspaceAuthenticationProvider.GetAccessToken(accessTokenRequest);
+      var accessToken = await payspaceAuthenticationProvider.GetAccessToken(accessTokenRequest);
 
-        var groups = authenticationResult.AuthenticationResultData;
+      var groups = authenticationResult.AuthenticationResultData;
 
-        Guard.Against.Null(groups, nameof(groups));
+      Guard.Against.Null(groups, nameof(groups));
 
-        var companyId = groups.First().Companies?.First().CompanyId;
+      var companyId = groups.First().Companies?.First().CompanyId;
 
-        Guard.Against.Null(companyId, nameof(companyId));
+      Guard.Against.Null(companyId, nameof(companyId));
 
-        var orgUnitSelections = await payspaceLookupApi.GetOrganizationLevelsAsync(accessTokenRequest, companyId.Value);
+      var orgUnitSelections = await payspaceLookupApi.GetOrganizationLevelsAsync(accessTokenRequest, companyId.Value);
 
-        var companies = groups.Where(gc => gc.Companies != null).SelectMany(gc => gc.Companies!).ToList();
+      var companies = groups.Where(gc => gc.Companies != null).SelectMany(gc => gc.Companies!).ToList();
 
-        return new PaySpaceAuthorizationResponse { AccessToken = accessToken, Companies = companies, AccessTokenRequest = accessTokenRequest };
-    }
+      return new PaySpaceAuthorizationResponse
+      {
+         AccessToken = accessToken,
+         Companies = companies,
+         AccessTokenRequest = accessTokenRequest
+      };
+   }
 }

@@ -8,9 +8,15 @@ public class PaySpaceIncidentApi(IPaySpaceApiClient payspaceApiClient)
    : PaySpaceApiBase(payspaceApiClient),
       IPaySpaceIncidentApi
 {
-    /// <inheritdoc/>
-    public async Task<List<EmployeeIncident>> EmployeeIncidentListAsync(JwtAccessTokenRequest accessTokenRequest, long companyId)
-    {
-        return await _payspaceApiClient.GetListAsync<EmployeeIncident>(accessTokenRequest, $"{companyId}/EmployeeIncident");
-    }
+   /// <inheritdoc/>
+   public async Task<List<EmployeeIncident>> EmployeeIncidentListAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId
+   )
+   {
+      return await _payspaceApiClient.GetListAsync<EmployeeIncident>(
+         accessTokenRequest,
+         $"{companyId}/EmployeeIncident"
+      );
+   }
 }

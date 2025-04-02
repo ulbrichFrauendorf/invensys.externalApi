@@ -4,5 +4,5 @@ namespace Invensys.ExternalApi.Sage300.Interfaces;
 
 public interface ISage300ApiClient
 {
-    Task<List<T>> GetListAsync<T>(ResourceOwnerPasswordCredentialTokenRequest accessTokenRequest, string url);
+   Task<List<T>> GetListAsync<T>(ResourceOwnerPasswordCredentialTokenRequest accessTokenRequest, string url);
 }

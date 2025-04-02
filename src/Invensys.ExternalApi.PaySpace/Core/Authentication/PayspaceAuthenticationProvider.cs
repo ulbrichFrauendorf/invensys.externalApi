@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Net.Http.Json;
+using Ardalis.GuardClauses;
 using Invensys.ExternalApi.Common.Authentication;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Models.Result;
@@ -9,7 +10,6 @@ using Invensys.ExternalApi.PaySpace.Core.Configuration;
 using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Authentication;
 
@@ -17,29 +17,31 @@ public class PaySpaceAuthenticationProvider(IHttpClientFactory httpClientFactory
    : AuthenticationProvider<GroupCompany[]>(httpClientFactory),
       IPaySpaceAuthenticationProvider
 {
-    protected override async Task<AuthenticationResult<GroupCompany[]>> Authenticate(AccessTokenRequest accessTokenRequest)
-    {
-        var jwtAccessTokenRequest = AccessTokenRequestValidator.Validate<JwtAccessTokenRequest>(accessTokenRequest);
+   protected override async Task<AuthenticationResult<GroupCompany[]>> Authenticate(
+      AccessTokenRequest accessTokenRequest
+   )
+   {
+      var jwtAccessTokenRequest = AccessTokenRequestValidator.Validate<JwtAccessTokenRequest>(accessTokenRequest);
 
-        var paySpaceConfig = configuration.GetSection(nameof(PaySpaceConfig)).Get<PaySpaceConfig>();
+      var paySpaceConfig = configuration.GetSection(nameof(PaySpaceConfig)).Get<PaySpaceConfig>();
 
-        Guard.Against.Null(paySpaceConfig, nameof(paySpaceConfig));
+      Guard.Against.Null(paySpaceConfig, nameof(paySpaceConfig));
 
-        var response = await _httpClient.PostAsync(paySpaceConfig.AuthorizationUrl, jwtAccessTokenRequest.ToFormData());
+      var response = await _httpClient.PostAsync(paySpaceConfig.AuthorizationUrl, jwtAccessTokenRequest.ToFormData());
 
-        var payspaceTokenResponse = await response.Content.ReadFromJsonAsync<PaySpaceApiTokenResponse>();
+      var payspaceTokenResponse = await response.Content.ReadFromJsonAsync<PaySpaceApiTokenResponse>();
 
-        Guard.Against.Null(payspaceTokenResponse, nameof(payspaceTokenResponse));
+      Guard.Against.Null(payspaceTokenResponse, nameof(payspaceTokenResponse));
 
-        Guard.Against.NullOrEmpty(payspaceTokenResponse.AccessToken, nameof(payspaceTokenResponse.AccessToken));
+      Guard.Against.NullOrEmpty(payspaceTokenResponse.AccessToken, nameof(payspaceTokenResponse.AccessToken));
 
-        var authResult = new AuthenticationResult<GroupCompany[]>
-        {
-            AuthenticationResultData = payspaceTokenResponse.GroupCompanies
-        };
+      var authResult = new AuthenticationResult<GroupCompany[]>
+      {
+         AuthenticationResultData = payspaceTokenResponse.GroupCompanies
+      };
 
-        authResult.SetAccessToken(payspaceTokenResponse.AccessToken, payspaceTokenResponse.ExpiresIn);
+      authResult.SetAccessToken(payspaceTokenResponse.AccessToken, payspaceTokenResponse.ExpiresIn);
 
-        return authResult;
-    }
+      return authResult;
+   }
 }

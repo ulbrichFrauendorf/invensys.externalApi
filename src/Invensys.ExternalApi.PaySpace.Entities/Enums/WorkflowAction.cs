@@ -4,9 +4,9 @@ namespace Invensys.ExternalApi.PaySpace.Entities.Enums;
 
 public enum WorkflowAction
 {
-    [Description("Approve")]
-    Approve = 0,
+   [Description("Approve")]
+   Approve = 0,
 
-    [Description("Reject")]
-    Reject = 1
+   [Description("Reject")]
+   Reject = 1
 }

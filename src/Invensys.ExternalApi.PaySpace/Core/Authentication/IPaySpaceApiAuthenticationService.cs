@@ -5,5 +5,5 @@ namespace Invensys.ExternalApi.PaySpace.Core.Authentication;
 
 public interface IPaySpaceApiAuthenticationService
 {
-    Task<PaySpaceAuthorizationResponse> Authenticate(JwtAccessTokenRequest accessTokenRequest);
+   Task<PaySpaceAuthorizationResponse> Authenticate(JwtAccessTokenRequest accessTokenRequest);
 }

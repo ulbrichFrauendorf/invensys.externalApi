@@ -2,5 +2,5 @@
 
 internal class Sage300Response<T>
 {
-    public List<T>? Data { get; set; }
+   public List<T>? Data { get; set; }
 }

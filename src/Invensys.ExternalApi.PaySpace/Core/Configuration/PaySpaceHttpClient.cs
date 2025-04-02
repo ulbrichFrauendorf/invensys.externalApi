@@ -2,5 +2,5 @@
 
 public static class PaySpaceHttpClient
 {
-    public const string PaySpaceRateLimitedApi = "PaySpaceRateLimitedApi";
+   public const string PaySpaceRateLimitedApi = "PaySpaceRateLimitedApi";
 }
