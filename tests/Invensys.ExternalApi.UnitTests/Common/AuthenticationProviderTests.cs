@@ -176,8 +176,11 @@ public class AuthenticationProviderTests
    {
       private readonly AuthenticationResult<string> _authenticationResult;
 
-      public TestAuthenticationProvider(IHttpClientFactory httpClientFactory, AuthenticationResult<string> authenticationResult)
-          : base(httpClientFactory)
+      public TestAuthenticationProvider(
+         IHttpClientFactory httpClientFactory,
+         AuthenticationResult<string> authenticationResult
+      )
+         : base(httpClientFactory)
       {
          _authenticationResult = authenticationResult;
       }

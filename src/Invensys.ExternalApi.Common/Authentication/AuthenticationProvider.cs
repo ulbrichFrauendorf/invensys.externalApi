@@ -16,7 +16,10 @@ public abstract class AuthenticationProvider<T>(IHttpClientFactory httpClientFac
    protected readonly HttpClient _httpClient = httpClientFactory.CreateClient();
 
    /// <inheritdoc />
-   public async Task<AuthenticationResult<T>> GetAuthenticationResult(AccessTokenRequest accessTokenRequest, bool forceRefresh = false)
+   public async Task<AuthenticationResult<T>> GetAuthenticationResult(
+      AccessTokenRequest accessTokenRequest,
+      bool forceRefresh = false
+   )
    {
       if (ShouldRefreshToken(forceRefresh))
          _authenticationResult = await Authenticate(accessTokenRequest);
@@ -40,9 +43,9 @@ public abstract class AuthenticationProvider<T>(IHttpClientFactory httpClientFac
 
    private bool ShouldRefreshToken(bool forceRefresh)
    {
-      return string.IsNullOrWhiteSpace(_authenticationResult?.AccessToken) ||
-             _authenticationResult?.AccessTokenExpiryDateTime.ToUniversalTime() <= DateTime.UtcNow ||
-             forceRefresh;
+      return string.IsNullOrWhiteSpace(_authenticationResult?.AccessToken)
+         || _authenticationResult?.AccessTokenExpiryDateTime.ToUniversalTime() <= DateTime.UtcNow
+         || forceRefresh;
    }
 
    /// <summary>

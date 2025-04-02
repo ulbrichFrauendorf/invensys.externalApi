@@ -1,11 +1,11 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using Ardalis.GuardClauses;
 using Invensys.ExternalApi.Common.Authentication;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Exceptions;
 using Invensys.ExternalApi.Common.Http.Models.Enums;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.Common.Http;
 
@@ -20,8 +20,13 @@ public class ExternalApiClient
    private readonly HeaderType _headerType;
    private readonly TokenAppendType _tokenAppendType;
 
-   protected ExternalApiClient(IHttpClientFactory httpClientFactory, IAuthenticationProvider authenticationProvider, string httpClientName, HeaderType headerType,
-      TokenAppendType tokenAppendType)
+   protected ExternalApiClient(
+      IHttpClientFactory httpClientFactory,
+      IAuthenticationProvider authenticationProvider,
+      string httpClientName,
+      HeaderType headerType,
+      TokenAppendType tokenAppendType
+   )
    {
       _httpClient = httpClientFactory.CreateClient(httpClientName);
       _authenticationProvider = authenticationProvider;
@@ -29,7 +34,10 @@ public class ExternalApiClient
       _tokenAppendType = tokenAppendType;
    }
 
-   protected async Task<T> SendRequestWithAuthRetry<T>(AccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
+   protected async Task<T> SendRequestWithAuthRetry<T>(
+      AccessTokenRequest accessTokenRequest,
+      Func<Task<HttpResponseMessage>> requestFunc
+   )
    {
       await AuthenticateHttpClient(accessTokenRequest);
 
@@ -62,9 +70,7 @@ public class ExternalApiClient
    }
 
    /// <inheritdoc />
-   public async Task AuthenticateHttpClient(
-      AccessTokenRequest accessTokenRequest,
-      bool forceRefresh = false)
+   public async Task AuthenticateHttpClient(AccessTokenRequest accessTokenRequest, bool forceRefresh = false)
    {
       var token = await _authenticationProvider.GetAccessToken(accessTokenRequest, forceRefresh: forceRefresh);
 
@@ -87,27 +93,35 @@ public class ExternalApiClient
 
    private void AppendTokenToQuery(string tokenString, string tokenPrefix)
    {
-      Guard.Against.Null(_httpClient.BaseAddress, nameof(_httpClient.BaseAddress), "Please ensure a base address has been configured in the HTTP pipeline.");
+      Guard.Against.Null(
+         _httpClient.BaseAddress,
+         nameof(_httpClient.BaseAddress),
+         "Please ensure a base address has been configured in the HTTP pipeline."
+      );
 
       var uriBuilder = new UriBuilder(_httpClient.BaseAddress);
 
       var query = uriBuilder.Query;
 
-      uriBuilder.Query = query.Length > 1 ? $"{query[1..]}&{tokenPrefix}={tokenString}" : $"{tokenPrefix}={tokenString}";
+      uriBuilder.Query =
+         query.Length > 1 ? $"{query[1..]}&{tokenPrefix}={tokenString}" : $"{tokenPrefix}={tokenString}";
 
       _httpClient.BaseAddress = uriBuilder.Uri;
    }
 
-    private void AppendTokenToHeader(string tokenString, string tokenPrefix)
-    {
-        if (tokenPrefix.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase));
-        }
-        else
-        {
-            _httpClient.DefaultRequestHeaders.Remove(tokenPrefix); // Ensure no duplicate
-            _httpClient.DefaultRequestHeaders.Add(tokenPrefix, tokenString);
-        }
-    }
+   private void AppendTokenToHeader(string tokenString, string tokenPrefix)
+   {
+      if (tokenPrefix.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+      {
+         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Bearer",
+            tokenString.Replace("bearer ", "", StringComparison.OrdinalIgnoreCase)
+         );
+      }
+      else
+      {
+         _httpClient.DefaultRequestHeaders.Remove(tokenPrefix); // Ensure no duplicate
+         _httpClient.DefaultRequestHeaders.Add(tokenPrefix, tokenString);
+      }
+   }
 }

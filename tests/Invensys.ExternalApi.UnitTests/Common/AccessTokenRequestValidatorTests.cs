@@ -45,10 +45,10 @@ public class AccessTokenRequestValidatorTests
       Action act = () => AccessTokenRequestValidator.Validate<AnotherAccessTokenRequest>(request);
 
       // Assert
-      act.Should().Throw<AuthenticationConfigurationException>().WithMessage("AnotherAccessTokenRequest object expected");
+      act.Should()
+         .Throw<AuthenticationConfigurationException>()
+         .WithMessage("AnotherAccessTokenRequest object expected");
    }
 
-   private class AnotherAccessTokenRequest : AccessTokenRequest
-   {
-   }
+   private class AnotherAccessTokenRequest : AccessTokenRequest { }
 }

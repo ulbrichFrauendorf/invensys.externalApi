@@ -4,12 +4,12 @@ namespace Invensys.ExternalApi.PaySpace.Entities.Enums;
 
 public enum BankAccountOwnerType
 {
-    [Description("Own")]
-    Own = 1,
+   [Description("Own")]
+   Own = 1,
 
-    [Description("Joint")]
-    Joint = 2,
+   [Description("Joint")]
+   Joint = 2,
 
-    [Description("Third Party")]
-    ThirdParty = 3
+   [Description("Third Party")]
+   ThirdParty = 3
 }

@@ -16,7 +16,8 @@ namespace Invensys.ExternalApi.Common.Authentication.Validators
       /// <param name="request">The access token request to validate.</param>
       /// <returns>The validated access token request.</returns>
       /// <exception cref="AuthenticationConfigurationException">Thrown when the request is not of the expected type.</exception>
-      public static T Validate<T>(AccessTokenRequest request) where T : AccessTokenRequest
+      public static T Validate<T>(AccessTokenRequest request)
+         where T : AccessTokenRequest
       {
          Guard.Against.Null(request, nameof(request));
 

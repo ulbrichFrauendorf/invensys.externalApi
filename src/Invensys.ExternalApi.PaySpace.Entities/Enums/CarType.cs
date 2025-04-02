@@ -4,9 +4,9 @@ namespace Invensys.ExternalApi.PaySpace.Entities.Enums;
 
 public enum CarType
 {
-    [Description("Car")]
-    Car = 1,
+   [Description("Car")]
+   Car = 1,
 
-    [Description("Bakkie")]
-    Bakkie = 2
+   [Description("Bakkie")]
+   Bakkie = 2
 }

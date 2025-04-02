@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
@@ -7,8 +9,6 @@ using Invensys.ExternalApi.Common.Http.Models.Enums;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace Invensys.ExternalApi.UnitTests.Common;
 
@@ -30,7 +30,6 @@ public class ExternalApiClientTests
 
       _httpClientFactoryMock.Setup(factory => factory.CreateClient(It.IsAny<string>())).Returns(_httpClient);
       _httpMessageHandlerMock.Protected().Setup("Dispose", ItExpr.IsAny<bool>());
-
    }
 
    [Test]
@@ -46,13 +45,23 @@ public class ExternalApiClientTests
 
       _httpMessageHandlerMock.SetupRequest(HttpMethod.Get, "http://test.com/", responseMessage);
 
-      _authenticationProviderMock.Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
-          .ReturnsAsync("test_token");
+      _authenticationProviderMock
+         .Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
+         .ReturnsAsync("test_token");
 
-      var client = new TestExternalApiClient(_httpClientFactoryMock.Object, _authenticationProviderMock.Object, "testClient", HeaderType.Authorization, TokenAppendType.Header);
+      var client = new TestExternalApiClient(
+         _httpClientFactoryMock.Object,
+         _authenticationProviderMock.Object,
+         "testClient",
+         HeaderType.Authorization,
+         TokenAppendType.Header
+      );
 
       // Act
-      var result = await client.SendRequestWithAuthRetry<TestData>(accessTokenRequest, () => _httpClient.GetAsync("http://test.com"));
+      var result = await client.SendRequestWithAuthRetry<TestData>(
+         accessTokenRequest,
+         () => _httpClient.GetAsync("http://test.com")
+      );
 
       // Assert
       result.Should().BeEquivalentTo(expectedContent);
@@ -70,13 +79,24 @@ public class ExternalApiClientTests
 
       _httpMessageHandlerMock.SetupRequest(HttpMethod.Get, "http://test.com", responseMessage);
 
-      _authenticationProviderMock.Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
-          .ReturnsAsync("test_token");
+      _authenticationProviderMock
+         .Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
+         .ReturnsAsync("test_token");
 
-      var client = new TestExternalApiClient(_httpClientFactoryMock.Object, _authenticationProviderMock.Object, "testClient", HeaderType.Authorization, TokenAppendType.Header);
+      var client = new TestExternalApiClient(
+         _httpClientFactoryMock.Object,
+         _authenticationProviderMock.Object,
+         "testClient",
+         HeaderType.Authorization,
+         TokenAppendType.Header
+      );
 
       // Act
-      Func<Task> act = async () => await client.SendRequestWithAuthRetry<object>(accessTokenRequest, () => _httpClient.GetAsync("http://test.com"));
+      Func<Task> act = async () =>
+         await client.SendRequestWithAuthRetry<object>(
+            accessTokenRequest,
+            () => _httpClient.GetAsync("http://test.com")
+         );
 
       // Assert
       act.Should().ThrowAsync<ExternalApiException>().WithMessage("API operation unsuccessful, Bad Request");
@@ -87,10 +107,17 @@ public class ExternalApiClientTests
    {
       // Arrange
       var accessTokenRequest = new AccessTokenRequest();
-      _authenticationProviderMock.Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
-          .ReturnsAsync("test_token");
+      _authenticationProviderMock
+         .Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
+         .ReturnsAsync("test_token");
 
-      var client = new TestExternalApiClient(_httpClientFactoryMock.Object, _authenticationProviderMock.Object, "testClient", HeaderType.Authorization, TokenAppendType.Header);
+      var client = new TestExternalApiClient(
+         _httpClientFactoryMock.Object,
+         _authenticationProviderMock.Object,
+         "testClient",
+         HeaderType.Authorization,
+         TokenAppendType.Header
+      );
 
       // Act
       await client.AuthenticateHttpClient(accessTokenRequest);
@@ -106,10 +133,17 @@ public class ExternalApiClientTests
    {
       // Arrange
       var accessTokenRequest = new AccessTokenRequest();
-      _authenticationProviderMock.Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
-          .ReturnsAsync("test_token");
+      _authenticationProviderMock
+         .Setup(provider => provider.GetAccessToken(It.IsAny<AccessTokenRequest>(), It.IsAny<bool>()))
+         .ReturnsAsync("test_token");
 
-      var client = new TestExternalApiClient(_httpClientFactoryMock.Object, _authenticationProviderMock.Object, "testClient", HeaderType.Authorization, TokenAppendType.Query);
+      var client = new TestExternalApiClient(
+         _httpClientFactoryMock.Object,
+         _authenticationProviderMock.Object,
+         "testClient",
+         HeaderType.Authorization,
+         TokenAppendType.Query
+      );
       _httpClient.BaseAddress = new Uri("http://test.com");
 
       // Act
@@ -127,12 +161,19 @@ public class ExternalApiClientTests
 
    private class TestExternalApiClient : ExternalApiClient
    {
-      public TestExternalApiClient(IHttpClientFactory httpClientFactory, IAuthenticationProvider authenticationProvider, string httpClientName, HeaderType headerType, TokenAppendType tokenAppendType)
-          : base(httpClientFactory, authenticationProvider, httpClientName, headerType, tokenAppendType)
-      {
-      }
+      public TestExternalApiClient(
+         IHttpClientFactory httpClientFactory,
+         IAuthenticationProvider authenticationProvider,
+         string httpClientName,
+         HeaderType headerType,
+         TokenAppendType tokenAppendType
+      )
+         : base(httpClientFactory, authenticationProvider, httpClientName, headerType, tokenAppendType) { }
 
-      public new async Task<T> SendRequestWithAuthRetry<T>(AccessTokenRequest accessTokenRequest, Func<Task<HttpResponseMessage>> requestFunc)
+      public new async Task<T> SendRequestWithAuthRetry<T>(
+         AccessTokenRequest accessTokenRequest,
+         Func<Task<HttpResponseMessage>> requestFunc
+      )
       {
          return await base.SendRequestWithAuthRetry<T>(accessTokenRequest, requestFunc);
       }
@@ -146,24 +187,31 @@ public class ExternalApiClientTests
 
 public static class HttpMessageHandlerExtensions
 {
-    public static Mock<HttpMessageHandler> SetupRequest(
-        this Mock<HttpMessageHandler> mockHandler, HttpMethod method, string requestUri, HttpResponseMessage response)
-    {
-        mockHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == method &&
-                    req.RequestUri!.ToString() == requestUri &&
-                    req.Headers.Authorization != null &&
-                    req.Headers.Authorization.Scheme == "Bearer" && // Match the exact case
-                    req.Headers.Authorization.Parameter == "test_token"),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(response);
+   public static Mock<HttpMessageHandler> SetupRequest(
+      this Mock<HttpMessageHandler> mockHandler,
+      HttpMethod method,
+      string requestUri,
+      HttpResponseMessage response
+   )
+   {
+      mockHandler
+         .Protected()
+         .Setup<Task<HttpResponseMessage>>(
+            "SendAsync",
+            ItExpr.Is<HttpRequestMessage>(req =>
+               req.Method == method
+               && req.RequestUri!.ToString() == requestUri
+               && req.Headers.Authorization != null
+               && req.Headers.Authorization.Scheme == "Bearer"
+               && // Match the exact case
+               req.Headers.Authorization.Parameter == "test_token"
+            ),
+            ItExpr.IsAny<CancellationToken>()
+         )
+         .ReturnsAsync(response);
 
-        return mockHandler;
-    }
+      return mockHandler;
+   }
 }
 
 public class TestData

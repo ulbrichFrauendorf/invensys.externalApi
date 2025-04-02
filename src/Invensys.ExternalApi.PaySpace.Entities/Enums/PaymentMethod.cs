@@ -4,12 +4,12 @@ namespace Invensys.ExternalApi.PaySpace.Entities.Enums;
 
 public enum PaymentMethod
 {
-    [Description("Cash")]
-    Cash = 1,
+   [Description("Cash")]
+   Cash = 1,
 
-    [Description("Cheque")]
-    Cheque = 3,
+   [Description("Cheque")]
+   Cheque = 3,
 
-    [Description("EFT")]
-    EFT = 4
+   [Description("EFT")]
+   EFT = 4
 }
