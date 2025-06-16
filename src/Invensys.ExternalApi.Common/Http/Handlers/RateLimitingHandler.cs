@@ -1,4 +1,4 @@
-﻿namespace Invensys.ExternalApi.PaySpace;
+﻿namespace Invensys.ExternalApi.Common.Http.Handlers;
 
 public class RateLimitingHandler : DelegatingHandler
 {
@@ -35,9 +35,7 @@ public class RateLimitingHandler : DelegatingHandler
          // Calculate remaining delay time
          var remainingDelay = _delayBetweenRequestsMilliseconds - elapsedTime;
          if (remainingDelay > 0)
-         {
             await Task.Delay(remainingDelay, cancellationToken);
-         }
 
          return response;
       }

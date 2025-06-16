@@ -1,27 +1,27 @@
 ﻿using System.Net;
 using Invensys.ExternalApi.Common.Http.Handlers;
-using Invensys.ExternalApi.Sage300.Core;
-using Invensys.ExternalApi.Sage300.Core.Authentication;
-using Invensys.ExternalApi.Sage300.Core.Configuration;
-using Invensys.ExternalApi.Sage300.Interfaces;
+using Invensys.ExternalApi.IntegraFlow.Core;
+using Invensys.ExternalApi.IntegraFlow.Core.Authentication;
+using Invensys.ExternalApi.IntegraFlow.Core.Configuration;
+using Invensys.ExternalApi.IntegraFlow.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 
-namespace Invensys.ExternalApi.Sage300;
+namespace Invensys.ExternalApi.IntegraFlow;
 
 public static class DependencyInjection
 {
-   public static IServiceCollection AddSage300ApiServices(this IServiceCollection services)
+   public static IServiceCollection AddIntegraFlowApiServices(this IServiceCollection services)
    {
       services
-         .AddHttpClient(Sage300HttpClient.Sage300RateLimitedApi)
+         .AddHttpClient(IntegraFlowHttpClient.IntegraFlowRateLimitedApi)
          .AddPolicyHandler(RateLimitPolicy)
          .AddHttpMessageHandler(() => new RateLimitingHandler(10, 100));
 
       //Core
-      services.AddTransient<ISage300AuthenticationProvider, Sage300AuthenticationProvider>(); //Implements IAuthenticationProvider<GroupCompany[]> From Api common
-      services.AddTransient<ISage300ApiClient, Sage300ApiClient>();
+      services.AddTransient<IIntegraFlowAuthenticationProvider, IntegraFlowAuthenticationProvider>();
+      services.AddTransient<IIntegraFlowApiClient, IntegraFlowApiClient>();
 
       return services;
    }

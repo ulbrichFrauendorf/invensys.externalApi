@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Invensys.ExternalApi.IntegraFlow\Invensys.ExternalApi.IntegraFlow.csproj" />
     <ProjectReference Include="..\..\src\Invensys.ExternalApi.Common\Invensys.ExternalApi.Common.csproj" />
     <ProjectReference Include="..\..\src\Invensys.ExternalApi.PaySpace\Invensys.ExternalApi.PaySpace.csproj" />
     <ProjectReference Include="..\..\src\Invensys.ExternalApi.Sage300\Invensys.ExternalApi.Sage300.csproj" />

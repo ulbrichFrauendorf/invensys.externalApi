@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using System.Reflection;
 using Ardalis.GuardClauses;
+using Invensys.ExternalApi.Common.Http.Handlers;
 using Invensys.ExternalApi.PaySpace.Core;
 using Invensys.ExternalApi.PaySpace.Core.Apis;
 using Invensys.ExternalApi.PaySpace.Core.Authentication;
