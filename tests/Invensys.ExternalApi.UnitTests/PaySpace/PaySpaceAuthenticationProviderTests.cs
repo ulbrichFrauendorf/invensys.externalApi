@@ -16,7 +16,6 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
    {
       private Mock<IHttpClientFactory> _httpClientFactoryMock;
       private Mock<HttpMessageHandler> _httpMessageHandlerMock;
-      private Mock<IConfiguration> _configurationMock;
       private PaySpaceAuthenticationProvider _provider;
 
       [SetUp]
@@ -28,7 +27,6 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          _httpClientFactoryMock = new Mock<IHttpClientFactory>();
          _httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-         _configurationMock = new Mock<IConfiguration>();
          var inMemorySettings = new Dictionary<string, string?>
          {
             { "PaySpaceConfig:ApiBaseUrl", "https://example.com/" },
