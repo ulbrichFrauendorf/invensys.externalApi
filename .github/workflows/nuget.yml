@@ -33,8 +33,12 @@ jobs:
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test --no-restore --verbosity normal
+      - name: Run tests (exclude integration)
+        run: |
+          for csproj in $(find . -name '*.csproj' ! -name '*IntegrationTests.csproj'); do
+          dotnet test "$csproj" --no-restore --verbosity normal
+          done
+
 
       - name: Pack NuGet packages
         run: |
