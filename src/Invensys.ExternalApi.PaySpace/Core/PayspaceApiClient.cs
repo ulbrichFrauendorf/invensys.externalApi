@@ -48,9 +48,13 @@ public class PaySpaceApiClient(
 
          filterQueryCount += partialFilters.Count();
 
-         var partialFilterString = Uri.EscapeDataString(stringToEscape: string.Join("', '", partialFilters.Where(x => x != null)));
+         var filterListString = string.Join("', '", partialFilters
+            .Select(s => s == null ? string.Empty : Uri.EscapeDataString(stringToEscape: s))
+            .Where(x => x != null));
+         
+         var partialFilterString = Uri.EscapeDataString(stringToEscape: filterListString);
 
-         var filter = $"$filter={filterKey} in ('{partialFilterString}')";
+         var filter = $"$filter={filterKey} in ('{filterListString}')";
 
          var filteredUrl = url.Contains('?') ? url + "&" + filter : url + "?" + filter;
 
