@@ -59,7 +59,7 @@ public class EmploymentStatus
    public string? Amount { get; set; }
 
    [JsonPropertyName("Percentage")]
-   public string? Percentage { get; set; }
+   public decimal? Percentage { get; set; }
 
    [JsonPropertyName("DeemnthlyRemuneration")]
    public string? DeemnthlyRemuneration { get; set; }

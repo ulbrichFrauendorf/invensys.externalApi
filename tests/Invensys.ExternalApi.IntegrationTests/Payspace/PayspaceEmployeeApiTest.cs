@@ -9,7 +9,7 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
       var list = await IPaySpaceEmployeeApi()
-         .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2024-03-01"));
+         .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], TestDate);
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
@@ -21,11 +21,26 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
       var list = await IPaySpaceEmployeeApi()
-         .EmployeeEmploymentStatusAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2024-03-01"));
+         .EmployeeEmploymentStatusAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], TestDate);
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
       list.Should().HaveCountGreaterThanOrEqualTo(10);
+   }
+
+   [Test]
+   public async Task ShouldReturnEmployeeStatusAllList()
+   {
+      var tokenResponse = await GetPaySpaceAuthTokenResponse();
+      // Run for each company to ensure data is returned
+      foreach (var companyId in tokenResponse.CompanyIds)
+      {
+         var list = await IPaySpaceEmployeeApi()
+            .EmployeeEmploymentStatusAllAsync(tokenResponse.Token, companyId);
+         list.Should().NotBeNull();
+         list.Should().NotBeEmpty();
+         list.Should().HaveCountGreaterThanOrEqualTo(10);
+      }
    }
 
    [Test]
@@ -44,7 +59,7 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
       var list = await IPaySpaceEmployeeApi()
-         .EmployeePositionsAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2024-03-01"));
+         .EmployeePositionsAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], TestDate);
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
