@@ -59,10 +59,20 @@ public class ExternalApiClient
       catch (Exception ex)
       {
          var res = await response.Content.ReadAsStringAsync();
+
          throw new ExternalApiException($"API operation unsuccessful, {res}", ex);
       }
 
-      var content = await response.Content.ReadFromJsonAsync<T>();
+      T? content;
+      try
+      {
+          content = await response.Content.ReadFromJsonAsync<T>();
+      }
+      catch (Exception ex){
+         var res = await response.Content.ReadAsStringAsync();
+
+         throw new ExternalApiException($"API operation unsuccessful, {res}", ex);
+      }
 
       Guard.Against.Null(content, nameof(content));
 

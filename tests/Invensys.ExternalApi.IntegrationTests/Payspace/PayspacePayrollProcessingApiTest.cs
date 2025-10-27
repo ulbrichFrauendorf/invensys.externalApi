@@ -60,7 +60,7 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
       var listEmps = (
          await IPaySpaceEmployeeApi()
-            .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2024-03-01"))
+            .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], TestDate)
       ).SelectString(e => e.EmployeeNumber);
 
       var list = await IPaySpacePayrollProcessingApi()
