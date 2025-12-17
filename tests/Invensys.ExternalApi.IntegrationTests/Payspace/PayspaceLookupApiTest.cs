@@ -33,8 +33,13 @@ internal class PaySpaceLookupApiTest : BaseTestFixture
    public async Task ShouldReturnCompanyRunsList()
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
+
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()
+        ?.PaySpaceTestClients
+        ?.First()!;
+
       var list = await IPaySpaceCompanyApi()
-         .GetCompanyRunsAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], "Monthly");
+         .GetCompanyRunsAsync(tokenResponse.Token, int.Parse(paySpaceTestClient.CompanyId!), paySpaceTestClient.FrequencyValue!);
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();

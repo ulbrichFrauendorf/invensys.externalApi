@@ -16,12 +16,16 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
          .SelectString(e => e.EmployeeNumber)
          .ToList();
 
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()
+         ?.PaySpaceTestClients
+         ?.First()!;
+
       var list = await IPaySpacePayrollProcessingApi()
          .GetEmployeeComponentsAsync(
             tokenResponse.Token,
-            tokenResponse.CompanyIds[0],
-            "Monthly",
-            "20251",
+            int.Parse(paySpaceTestClient.CompanyId!),
+            paySpaceTestClient.FrequencyValue!,
+            paySpaceTestClient.PayrunValue!,
             listEmps
          );
 
