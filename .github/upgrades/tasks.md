@@ -14,18 +14,18 @@ This document tracks the execution of the Invensys.ExternalApi upgrade from .NET
 **References**: Plan §Migration Strategy, Plan §Package Update Reference, Plan §Breaking Changes Catalog
 
 - [✓] (1) Verify .NET 10 SDK installed
-- [▶] (2) SDK version meets minimum requirements (**Verify**)
+- [✓] (2) SDK version meets minimum requirements (**Verify**)
 - [✓] (3) Check for global.json in repository root
 - [✓] (4) Update or remove global.json version constraint if present to allow .NET 10
-- [▶] (5) global.json compatible with .NET 10 SDK (**Verify**)
-- [ ] (6) Update `<TargetFramework>net10.0</TargetFramework>` in all 9 project files per Plan §Detailed Dependency Analysis (Common, PaySpace.Entities, Odata, Sage300, Testing.Emulator, PaySpace, IntegraFlow, IntegrationTests, UnitTests)
-- [ ] (7) All project files updated to net10.0 (**Verify**)
-- [ ] (8) Update all package references per Plan §Package Update Reference: Microsoft.Extensions.Http (8.0.1 → 10.0.1), Microsoft.Extensions.Http.Polly (8.0.17 → 10.0.1), Microsoft.AspNetCore.Mvc.Testing (8.0.7 → 10.0.1), Microsoft.Extensions.DependencyInjection (8.0.1 → 10.0.1)
-- [ ] (9) All package references updated (**Verify**)
-- [ ] (10) Restore all dependencies using `dotnet restore`
-- [ ] (11) All dependencies restored successfully (**Verify**)
-- [ ] (12) Build solution using `dotnet build` and fix all compilation errors per Plan §Breaking Changes Catalog (focus on ASP.NET Core test host changes, DI service resolution, Polly/HttpClientFactory patterns)
-- [ ] (13) Solution builds with 0 errors (**Verify**)
+- [✓] (5) global.json compatible with .NET 10 SDK (**Verify**)
+- [✓] (6) Update `<TargetFramework>net10.0</TargetFramework>` in all 9 project files per Plan §Detailed Dependency Analysis (Common, PaySpace.Entities, Odata, Sage300, Testing.Emulator, PaySpace, IntegraFlow, IntegrationTests, UnitTests)
+- [✓] (7) All project files updated to net10.0 (**Verify**)
+- [✓] (8) Update all package references per Plan §Package Update Reference: Microsoft.Extensions.Http (8.0.1 → 10.0.1), Microsoft.Extensions.Http.Polly (8.0.17 → 10.0.1), Microsoft.AspNetCore.Mvc.Testing (8.0.7 → 10.0.1), Microsoft.Extensions.DependencyInjection (8.0.1 → 10.0.1)
+- [✓] (9) All package references updated (**Verify**)
+- [✓] (10) Restore all dependencies using `dotnet restore`
+- [▶] (11) All dependencies restored successfully (**Verify**)
+- [✓] (12) Build solution using `dotnet build` and fix all compilation errors per Plan §Breaking Changes Catalog (focus on ASP.NET Core test host changes, DI service resolution, Polly/HttpClientFactory patterns)
+- [▶] (13) Solution builds with 0 errors (**Verify**)
 - [ ] (14) Commit changes with message: "TASK-001: Atomic upgrade to .NET 10.0"
 
 ---
@@ -40,6 +40,21 @@ This document tracks the execution of the Invensys.ExternalApi upgrade from .NET
 - [ ] (5) Commit test fixes with message: "TASK-002: Complete testing and validation"
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
