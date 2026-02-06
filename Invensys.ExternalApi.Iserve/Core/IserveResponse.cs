@@ -2,5 +2,5 @@
 
 public class IserveResponse<T>
 {
-   public List<T> Response { get; set; } = [];
+   public T Response { get; set; } = default!;
 }
