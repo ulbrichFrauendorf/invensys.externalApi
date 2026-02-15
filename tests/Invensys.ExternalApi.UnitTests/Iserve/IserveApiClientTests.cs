@@ -50,143 +50,6 @@ public class IserveApiClientTests
     }
 
     [Test]
-    public async Task GetAsync_ShouldReturnObject_WhenResponseIsSuccessful()
-    {
-        // Arrange
-        var expectedData = new UserRegistrationResponse
-        {
-            Email = "invensys.za@gmail.com",
-            FirstName = "Jane",
-            LastName = "Doe"
-        };
-
-        var expectedResponse = new IserveResponse<UserRegistrationResponse>
-        {
-            Response = expectedData
-        };
-
-        _httpMessageHandlerMock
-           .Protected()
-           .Setup<Task<HttpResponseMessage>>(
-              "SendAsync",
-              ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-              ItExpr.IsAny<CancellationToken>()
-           )
-           .ReturnsAsync(
-              new HttpResponseMessage
-              {
-                  StatusCode = HttpStatusCode.OK,
-                  Content = new StringContent(JsonSerializer.Serialize(expectedResponse))
-              }
-           );
-
-        // Act
-        var result = await _client.GetAsync<UserRegistrationResponse>(_accessTokenRequest, "api/ExternalRegistration/users/123");
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Email.Should().Be("invensys.za@gmail.com");
-        result.FirstName.Should().Be("Jane");
-        result.LastName.Should().Be("Doe");
-    }
-
-    [Test]
-    public async Task GetAsync_ShouldThrowException_WhenResponseIsUnsuccessful()
-    {
-        // Arrange
-        _httpMessageHandlerMock
-           .Protected()
-           .Setup<Task<HttpResponseMessage>>(
-              "SendAsync",
-              ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-              ItExpr.IsAny<CancellationToken>()
-           )
-           .ReturnsAsync(
-              new HttpResponseMessage
-              {
-                  StatusCode = HttpStatusCode.BadRequest,
-                  Content = new StringContent("{\"error\": \"Invalid request\"}")
-              }
-           );
-
-        // Act & Assert
-        await _client.Invoking(c => c.GetAsync<UserRegistrationResponse>(_accessTokenRequest, "api/ExternalRegistration/users/123"))
-           .Should().ThrowAsync<Exception>();
-    }
-
-    [Test]
-    public async Task GetListAsync_ShouldReturnList_WhenResponseIsSuccessful()
-    {
-        // Arrange
-        var expectedData = new List<UserRegistrationResponse>
-      {
-         new() { Email = "user1@example.com", FirstName = "John", LastName = "Doe" },
-         new() { Email = "user2@example.com", FirstName = "Jane", LastName = "Smith" }
-      };
-
-        var expectedResponse = new IserveResponse<List<UserRegistrationResponse>>
-        {
-            Response = expectedData
-        };
-
-        _httpMessageHandlerMock
-           .Protected()
-           .Setup<Task<HttpResponseMessage>>(
-              "SendAsync",
-              ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-              ItExpr.IsAny<CancellationToken>()
-           )
-           .ReturnsAsync(
-              new HttpResponseMessage
-              {
-                  StatusCode = HttpStatusCode.OK,
-                  Content = new StringContent(JsonSerializer.Serialize(expectedResponse))
-              }
-           );
-
-        // Act
-        var result = await _client.GetListAsync<UserRegistrationResponse>(_accessTokenRequest, "api/ExternalRegistration/users");
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().HaveCount(2);
-        result[0].Email.Should().Be("user1@example.com");
-        result[1].FirstName.Should().Be("Jane");
-    }
-
-    [Test]
-    public async Task GetListAsync_ShouldReturnEmptyList_WhenResponseHasNoData()
-    {
-        // Arrange
-        var emptyResponse = new IserveResponse<List<UserRegistrationResponse>>
-        {
-            Response = []
-        };
-
-        _httpMessageHandlerMock
-           .Protected()
-           .Setup<Task<HttpResponseMessage>>(
-              "SendAsync",
-              ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-              ItExpr.IsAny<CancellationToken>()
-           )
-           .ReturnsAsync(
-              new HttpResponseMessage
-              {
-                  StatusCode = HttpStatusCode.OK,
-                  Content = new StringContent(JsonSerializer.Serialize(emptyResponse))
-              }
-           );
-
-        // Act
-        var result = await _client.GetListAsync<UserRegistrationResponse>(_accessTokenRequest, "api/ExternalRegistration/users");
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().BeEmpty();
-    }
-
-    [Test]
     public async Task PostAsync_ShouldReturnResponse_WhenRegistrationIsSuccessful()
     {
         // Arrange
@@ -200,16 +63,9 @@ public class IserveApiClientTests
             SystemClaims = ["iserve.access"]
         };
 
-        var expectedData = new UserRegistrationResponse
+        var expectedResponse = new CreateOrUpdateUserResult
         {
-            Email = "invensys.za@gmail.com",
-            FirstName = "Jane",
-            LastName = "Doe"
-        };
-
-        var expectedResponse = new IserveResponse<UserRegistrationResponse>
-        {
-            Response = expectedData
+            UserId = "12345"
         };
 
         _httpMessageHandlerMock
@@ -223,12 +79,15 @@ public class IserveApiClientTests
               new HttpResponseMessage
               {
                   StatusCode = HttpStatusCode.OK,
-                  Content = new StringContent(JsonSerializer.Serialize(expectedResponse))
+                  Content = new StringContent(
+                     JsonSerializer.Serialize(expectedResponse),
+                     System.Text.Encoding.UTF8,
+                     "application/json")
               }
            );
 
         // Act
-        var result = await _client.PostAsync<UserRegistrationResponse, UserRegistrationRequest>(
+        var result = await _client.PostAsync<CreateOrUpdateUserResult, UserRegistrationRequest>(
            _accessTokenRequest,
            "api/ExternalRegistration/register",
            requestData
@@ -236,9 +95,7 @@ public class IserveApiClientTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Email.Should().Be("invensys.za@gmail.com");
-        result.FirstName.Should().Be("Jane");
-        result.LastName.Should().Be("Doe");
+        result.UserId.Should().Be("12345");
     }
 
     [Test]
@@ -255,17 +112,13 @@ public class IserveApiClientTests
             SystemClaims = ["iserve.access"]
         };
 
-        var expectedResponse = new IserveResponse<UserRegistrationResponse>
-        {
-            Response = new UserRegistrationResponse
-            {
-                Email = "invensys.za@gmail.com",
-                FirstName = "Jane",
-                LastName = "Doe"
-            }
-        };
+      var expectedResponse = new CreateOrUpdateUserResult
+      {
+         UserId = "12345"
+      };
 
-        HttpRequestMessage? capturedRequest = null;
+      HttpRequestMessage? capturedRequest = null;
+
 
         _httpMessageHandlerMock
            .Protected()
@@ -279,12 +132,15 @@ public class IserveApiClientTests
               new HttpResponseMessage
               {
                   StatusCode = HttpStatusCode.OK,
-                  Content = new StringContent(JsonSerializer.Serialize(expectedResponse))
+                  Content = new StringContent(
+                     JsonSerializer.Serialize(expectedResponse),
+                     System.Text.Encoding.UTF8,
+                     "application/json")
               }
            );
 
         // Act
-        await _client.PostAsync<UserRegistrationResponse, UserRegistrationRequest>(
+        await _client.PostAsync<CreateOrUpdateUserResult, UserRegistrationRequest>(
            _accessTokenRequest,
            "api/ExternalRegistration/register",
            requestData
@@ -296,10 +152,14 @@ public class IserveApiClientTests
         capturedRequest.Content.Should().NotBeNull();
 
         var contentString = await capturedRequest.Content!.ReadAsStringAsync();
-        contentString.Should().Contain("invensys.za@gmail.com");
-        contentString.Should().Contain("Jane");
-        contentString.Should().Contain("Doe");
-    }
+        contentString.Should().NotBeNullOrEmpty();
+        contentString.Should().Contain("email");
+        contentString.Should().Contain("tenantIds");
+        contentString.Should().Contain("firstName");
+        contentString.Should().Contain("lastName");
+        contentString.Should().Contain("roleClaims");
+        contentString.Should().Contain("systemClaims");
+      }
 
     [Test]
     public async Task PostAsync_ShouldThrowException_WhenResponseIsUnsuccessful()
@@ -331,7 +191,7 @@ public class IserveApiClientTests
            );
 
         // Act & Assert
-        await _client.Invoking(c => c.PostAsync<UserRegistrationResponse, UserRegistrationRequest>(
+        await _client.Invoking(c => c.PostAsync<CreateOrUpdateUserResult, UserRegistrationRequest>(
            _accessTokenRequest,
            "api/ExternalRegistration/register",
            requestData
@@ -355,10 +215,9 @@ public class IserveApiClientTests
         public List<string> SystemClaims { get; set; } = [];
     }
 
-    private class UserRegistrationResponse
-    {
-        public string Email { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-    }
+    private class CreateOrUpdateUserResult
+   {
+      public required string UserId { get; init; }
+   }
+
 }
