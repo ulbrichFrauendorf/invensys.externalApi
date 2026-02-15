@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Invensys.ExternalApi.Common\Invensys.ExternalApi.Common.csproj" />
+    <ProjectReference Include="..\Invensys.ExternalApi.Common\Invensys.ExternalApi.Common.csproj" />
   </ItemGroup>
 
 </Project>
