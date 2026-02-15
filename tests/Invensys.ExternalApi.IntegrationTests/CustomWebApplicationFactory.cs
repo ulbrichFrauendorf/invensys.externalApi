@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Invensys.ExternalApi.PaySpace;
 using Invensys.ExternalApi.Sage300;
+using Invensys.ExternalApi.Iserve;
 using Testing.Emulator;
 
 namespace Invensys.ExternalApi.IntegrationTests;
@@ -27,6 +28,7 @@ public class CustomWebApplicationFactory() : WebApplicationFactory<Program>
          services.AddHttpClient();
          services.AddPaySpaceApiServices(configuration);
          services.AddSage300ApiServices();
+         services.AddIserveApiServices();
       });
    }
 }

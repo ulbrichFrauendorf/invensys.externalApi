@@ -1,10 +1,13 @@
 ﻿using Ardalis.GuardClauses;
 using Invensys.ExternalApi.IntegrationTests.Payspace;
+using Invensys.ExternalApi.IntegrationTests.Iserve;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Models.Result;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Invensys.ExternalApi.Sage300.Core.Models.Request;
 using Invensys.ExternalApi.Sage300.Interfaces;
+using Invensys.ExternalApi.Iserve.Interfaces;
+using Invensys.ExternalApi.Iserve.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -129,6 +132,64 @@ public partial class Testing
       using var scope = s_scopeFactory.CreateScope();
 
       return scope.ServiceProvider.GetRequiredService<IPaySpaceCompanyApi>();
+   }
+
+   public static IserveTestClientsConfig GetIserveTestClientConfig()
+   {
+      var scope = s_factory.Services.CreateScope();
+
+      var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+      var iserveTestClientConfig = config
+         .GetSection(nameof(IserveTestClientsConfig))
+         .Get<IserveTestClientsConfig>();
+
+      Guard.Against.Null(iserveTestClientConfig, nameof(iserveTestClientConfig));
+
+      return iserveTestClientConfig;
+   }
+
+   public static IserveConfig GetIserveConfig()
+   {
+      var scope = s_factory.Services.CreateScope();
+
+      var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+      var iserveConfig = config
+         .GetSection(nameof(IserveConfig))
+         .Get<IserveConfig>();
+
+      Guard.Against.Null(iserveConfig, nameof(iserveConfig));
+
+      return iserveConfig;
+   }
+
+   public static async Task<JwtAccessTokenRequest> GetIserveAuthTokenResponse()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      var iserveAuthProvider = scope.ServiceProvider.GetRequiredService<IIserveAuthenticationProvider>();
+
+      var iserveTestClient = GetIserveTestClientConfig()
+         ?.IserveTestClients
+         ?.First()!;
+
+      var accessTokenRequest = new ClientCredentialsTokenRequest(
+         iserveTestClient.ClientId!,
+         iserveTestClient.ClientSecret!,
+         iserveTestClient.Scope!
+      );
+
+      var accessToken = await iserveAuthProvider.GetAccessToken(accessTokenRequest);
+
+      return accessTokenRequest;
+   }
+
+   public static IIserveApiClient IIserveApiClient()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      return scope.ServiceProvider.GetRequiredService<IIserveApiClient>();
    }
 
    public static async Task ResetState()
