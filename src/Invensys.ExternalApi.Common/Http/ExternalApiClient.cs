@@ -66,7 +66,7 @@ public class ExternalApiClient
       T? content;
       try
       {
-          content = await response.Content.ReadFromJsonAsync<T>();
+         content = await response.Content.ReadFromJsonAsync<T>();
       }
       catch (Exception ex){
          var res = await response.Content.ReadAsStringAsync();

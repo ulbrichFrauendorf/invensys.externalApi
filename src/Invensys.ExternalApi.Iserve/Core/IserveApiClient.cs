@@ -35,8 +35,8 @@ public class IserveApiClient(
 
    public async Task<TResponse> PostAsync<TResponse, TRequest>(JwtAccessTokenRequest accessTokenRequest, string url, TRequest requestBody)
    {
-      var response = await SendRequestWithAuthRetry<IserveResponse<TResponse>>(accessTokenRequest, async () => await _httpClient.PostAsJsonAsync(url, requestBody));
+      var response = await SendRequestWithAuthRetry<TResponse>(accessTokenRequest, async () => await _httpClient.PostAsJsonAsync(url, requestBody));
 
-      return response.Response;
+      return response;
    }
 }
