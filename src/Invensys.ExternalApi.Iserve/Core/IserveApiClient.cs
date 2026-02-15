@@ -19,20 +19,6 @@ public class IserveApiClient(
       TokenAppendType.Header
    ), IIserveApiClient
 {
-   public async Task<List<TRequest>> GetListAsync<TRequest>(JwtAccessTokenRequest accessTokenRequest, string url)
-   {
-      var response = await SendRequestWithAuthRetry<IserveResponse<List<TRequest>>>(accessTokenRequest, async () => await _httpClient.GetAsync(url));
-
-      return response.Response;
-   }
-
-   public async Task<TRequest> GetAsync<TRequest>(JwtAccessTokenRequest accessTokenRequest, string url)
-   {
-      var response = await SendRequestWithAuthRetry<IserveResponse<TRequest>>(accessTokenRequest, async () => await _httpClient.GetAsync(url));
-
-      return response.Response;
-   }
-
    public async Task<TResponse> PostAsync<TResponse, TRequest>(JwtAccessTokenRequest accessTokenRequest, string url, TRequest requestBody)
    {
       var response = await SendRequestWithAuthRetry<TResponse>(accessTokenRequest, async () => await _httpClient.PostAsJsonAsync(url, requestBody));
