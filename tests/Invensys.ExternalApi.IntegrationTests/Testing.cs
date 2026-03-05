@@ -134,6 +134,13 @@ public partial class Testing
       return scope.ServiceProvider.GetRequiredService<IPaySpaceCompanyApi>();
    }
 
+   public static IPaySpaceLeaveApi IPaySpaceLeaveApi()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      return scope.ServiceProvider.GetRequiredService<IPaySpaceLeaveApi>();
+   }
+
    public static IserveTestClientsConfig GetIserveTestClientConfig()
    {
       var scope = s_factory.Services.CreateScope();
