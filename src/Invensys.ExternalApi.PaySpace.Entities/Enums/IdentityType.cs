@@ -16,5 +16,8 @@ public enum IdentityType
    PermitOrPassport = 3,
 
    [Description("Social Security")]
-   SocialSecurity = 4
+   SocialSecurity = 4,
+
+   [Description("Work Permit")]
+   WorkPermit = 5
 }
