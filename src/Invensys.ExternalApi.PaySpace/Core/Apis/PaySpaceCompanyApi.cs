@@ -56,8 +56,9 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       DateTime periodEndDate
    )
    {
+
       var url =
-         $"{companyId}/Lookup/CompanyRun?frequency={frequencyValue}&$filter=PeriodStartDate ge {periodStartDate.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ} and PeriodEndDate le {periodEndDate.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}";
+         $"{companyId}/Lookup/CompanyRun?frequency={frequencyValue}&$filter=PeriodStartDate ge {PaySpaceDateHelper.FormatODataDate(periodStartDate)} and PeriodEndDate le {PaySpaceDateHelper.FormatODataDate(periodEndDate)}";
       return await paySpaceApiClient.GetListAsync<CompanyRun>(accessTokenRequest, url);
    }
 

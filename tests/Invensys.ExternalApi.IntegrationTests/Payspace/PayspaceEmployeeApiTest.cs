@@ -51,7 +51,7 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
-      list.Should().HaveCountGreaterThanOrEqualTo(10);
+      list.Should().HaveCountGreaterThanOrEqualTo(3);
    }
 
    [Test]

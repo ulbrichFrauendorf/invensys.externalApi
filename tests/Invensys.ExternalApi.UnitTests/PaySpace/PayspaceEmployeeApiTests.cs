@@ -151,6 +151,28 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
       }
 
       [Test]
+      public async Task EmployeeEmploymentStatusAsync_WithEmployeeNumbers_UsesSouthAfricanEffectiveDate()
+      {
+         var employeeNumbers = new[] { "E001" };
+         var expectedStatuses = new List<EmploymentStatus> { new() { EmployeeNumber = "E001" } };
+         _paySpaceApiClientMock
+            .Setup(client => client.GetListAsyncWithListFilter<EmploymentStatus>(
+               _accessTokenRequest,
+               "1/EmployeeEmploymentStatus/effective/2025-01-01",
+               "EmployeeNumber",
+               employeeNumbers))
+            .ReturnsAsync(expectedStatuses);
+
+         var result = await _paySpaceEmployeeApi.EmployeeEmploymentStatusAsync(
+            _accessTokenRequest, 1,
+            new DateTime(2024, 12, 31, 22, 30, 0, DateTimeKind.Utc),
+            employeeNumbers);
+
+         result.Should().BeEquivalentTo(expectedStatuses);
+         _paySpaceApiClientMock.VerifyAll();
+      }
+
+      [Test]
       public async Task EmployeeBankDetailAsync_ShouldReturnEmployeeBankDetails()
       {
          var companyId = 1L;

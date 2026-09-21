@@ -29,7 +29,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsync<Employee>(
          accessTokenRequest,
-         $"{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}"
+         $"{companyId}/Employee/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
       );
    }
 
@@ -43,7 +43,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsyncWithListFilter<Employee>(
          accessTokenRequest,
-         $"{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}",
+         $"{companyId}/Employee/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
          "EmployeeNumber",
          employeeNumbers
       );
@@ -58,7 +58,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsync<EmployeePosition>(
          accessTokenRequest,
-         $"{companyId}/EmployeePosition/effective/{effectiveDate:yyyy-MM-dd}"
+         $"{companyId}/EmployeePosition/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
       );
    }
 
@@ -72,7 +72,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeePosition>(
          accessTokenRequest,
-         $"{companyId}/EmployeePosition/effective/{effectiveDate:yyyy-MM-dd}",
+         $"{companyId}/EmployeePosition/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
          "EmployeeNumber",
          employeeNumbers
       );
@@ -99,7 +99,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsync<EmploymentStatus>(
          accessTokenRequest,
-         $"{companyId}/EmployeeEmploymentStatus/effective/{effectiveDate:yyyy-MM-dd}"
+         $"{companyId}/EmployeeEmploymentStatus/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
       );
    }
 
@@ -113,7 +113,7 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsyncWithListFilter<EmploymentStatus>(
          accessTokenRequest,
-         $"{companyId}/EmployeeEmploymentStatus/all",
+         $"{companyId}/EmployeeEmploymentStatus/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
          "EmployeeNumber",
          employeeNumbers
       );
