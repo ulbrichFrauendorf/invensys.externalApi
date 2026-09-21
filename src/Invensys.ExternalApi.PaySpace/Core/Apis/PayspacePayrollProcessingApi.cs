@@ -18,7 +18,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsync<EmployeePayRate>(
          accessTokenRequest,
-         $"{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}"
+         $"{companyId}/EmployeePayRate/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
       );
    }
 
@@ -32,7 +32,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
    {
       return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeePayRate>(
          accessTokenRequest,
-         $"{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}",
+         $"{companyId}/EmployeePayRate/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
          "EmployeeNumber",
          employeeNumbers
       );

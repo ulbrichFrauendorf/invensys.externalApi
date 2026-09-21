@@ -57,8 +57,8 @@ public interface IPaySpaceCompanyApi
    /// <param name="token"></param>
    /// <param name="companyId"></param>
    /// <param name="frequencyValue"></param>
-   /// <param name="periodStartDate"></param>
-   /// <param name="periodEndDate"></param>
+   /// <param name="periodStartDate">Inclusive start date, converted to South African time and normalized to midnight. Unspecified values are treated as South African time.</param>
+   /// <param name="periodEndDate">Inclusive end date, converted to South African time and normalized to midnight. Unspecified values are treated as South African time.</param>
    /// <returns></returns>
    Task<List<CompanyRun>> GetCompanyRunsAsync(
       JwtAccessTokenRequest accessTokenRequest,

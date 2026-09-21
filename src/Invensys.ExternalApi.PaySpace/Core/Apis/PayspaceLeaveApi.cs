@@ -36,11 +36,12 @@ public class PaySpaceLeaveApi(IPaySpaceApiClient payspaceApiClient)
       );
    }
 
+
    private static string BuildODataFilter(DateTime startDate, DateTime endDate)
    {
       // Convert dates to ISO 8601 format
-      var startDateString = startDate.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-      var endDateString = endDate.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+      var startDateString = PaySpaceDateHelper.FormatODataDate(startDate);
+      var endDateString = PaySpaceDateHelper.FormatODataDate(endDate);
 
       // Build the OData filter string
       return $"LeaveStartDate ge {startDateString} and LeaveEndDate le {endDateString}";

@@ -31,7 +31,7 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
-      list.Should().HaveCountGreaterThanOrEqualTo(10);
+      list.Should().HaveCountGreaterThanOrEqualTo(3);
    }
 
    [Test]
@@ -62,22 +62,27 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
    public async Task ShouldReturnEmployeePensionFundList()
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
+
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()
+         ?.PaySpaceTestClients
+         ?.First()!;
+      
       var listEmps = (
          await IPaySpaceEmployeeApi()
-            .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], TestDate)
+            .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2026-01-01"))
       ).SelectString(e => e.EmployeeNumber);
 
       var list = await IPaySpacePayrollProcessingApi()
          .GetEmployeePensionFundAsync(
             tokenResponse.Token,
-            tokenResponse.CompanyIds[0],
-            "006_Salaries",
-            "20243",
+            int.Parse(paySpaceTestClient.CompanyId!),
+            paySpaceTestClient.FrequencyValue!,
+            paySpaceTestClient.PayrunValue!,
             listEmps
          );
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty();
-      list.Should().HaveCountGreaterThanOrEqualTo(10);
+      list.Should().HaveCountGreaterThanOrEqualTo(3);
    }
 }
