@@ -118,6 +118,67 @@ public interface IPaySpaceEmployeeApi
    );
 
    /// <summary>
+   /// Gets employee recurring costing headers and split details as of the effective date. Requires API v2.0.
+   /// https://api.payspace.com/odata/v2.0/:company-id/EmployeeRecurringCosting/effective/:effectivedate
+   /// </summary>
+   /// <param name="accessTokenRequest">The authentication request.</param>
+   /// <param name="companyId">The company ID.</param>
+   /// <param name="effectiveDate">The effective date, formatted in South African time.</param>
+   /// <returns>Employee recurring costing records.</returns>
+   Task<List<EmployeeRecurringCosting>> EmployeeRecurringCostingAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate
+   );
+
+   /// <summary>
+   /// Gets employee recurring costing headers and split details for the specified employees as of the effective date.
+   /// Requires API v2.0.
+   /// https://api.payspace.com/odata/v2.0/:company-id/EmployeeRecurringCosting/effective/:effectivedate
+   /// </summary>
+   /// <param name="accessTokenRequest">The authentication request.</param>
+   /// <param name="companyId">The company ID.</param>
+   /// <param name="effectiveDate">The effective date, formatted in South African time.</param>
+   /// <param name="employeeNumbers">The employee numbers to filter by.</param>
+   /// <returns>Employee recurring costing records for the specified employees.</returns>
+   Task<List<EmployeeRecurringCosting>> EmployeeRecurringCostingAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate,
+      IEnumerable<string> employeeNumbers
+   );
+
+   /// <summary>
+   /// Gets employee recurring costing splits as of the effective date.
+   /// https://api.payspace.com/odata/v2.0/:company-id/EmployeeRecurringCostingSplit/effective/:effectivedate
+   /// </summary>
+   /// <param name="accessTokenRequest">The authentication request.</param>
+   /// <param name="companyId">The company ID.</param>
+   /// <param name="effectiveDate">The effective date, formatted in South African time.</param>
+   /// <returns>Employee recurring costing split records.</returns>
+   Task<List<EmployeeRecurringCostingSplit>> EmployeeRecurringCostingSplitAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate
+   );
+
+   /// <summary>
+   /// Gets employee recurring costing splits for the specified employees as of the effective date.
+   /// https://api.payspace.com/odata/v2.0/:company-id/EmployeeRecurringCostingSplit/effective/:effectivedate
+   /// </summary>
+   /// <param name="accessTokenRequest">The authentication request.</param>
+   /// <param name="companyId">The company ID.</param>
+   /// <param name="effectiveDate">The effective date, formatted in South African time.</param>
+   /// <param name="employeeNumbers">The employee numbers to filter by.</param>
+   /// <returns>Employee recurring costing split records for the specified employees.</returns>
+   Task<List<EmployeeRecurringCostingSplit>> EmployeeRecurringCostingSplitAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate,
+      IEnumerable<string> employeeNumbers
+   );
+
+   /// <summary>
    /// https://api.payspace.com/odata/v1.1/:company-id/EmployeeAddress/{{EmployeeNumber}}?$select={{$select}}
    /// </summary>
    /// <param name="token"></param>

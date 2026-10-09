@@ -150,6 +150,78 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          result.Should().BeEquivalentTo(expectedStatuses);
       }
 
+      [TestCase(false)]
+      [TestCase(true)]
+      public async Task EmployeeRecurringCostingAsync_UsesSouthAfricanEffectiveDate(bool filterEmployees)
+      {
+         var employeeNumbers = new[] { "E001", "E002" };
+         var expectedCosting = new List<EmployeeRecurringCosting>
+         {
+            new() { RecurringCostingSplitHeaderId = 2147483648L, EmployeeNumber = "E001" }
+         };
+         const string url = "1/EmployeeRecurringCosting/effective/2025-01-01";
+
+         if (filterEmployees)
+         {
+            _paySpaceApiClientMock
+               .Setup(client => client.GetListAsyncWithListFilter<EmployeeRecurringCosting>(
+                  _accessTokenRequest, url, "EmployeeNumber", employeeNumbers))
+               .ReturnsAsync(expectedCosting);
+         }
+         else
+         {
+            _paySpaceApiClientMock
+               .Setup(client => client.GetListAsync<EmployeeRecurringCosting>(_accessTokenRequest, url))
+               .ReturnsAsync(expectedCosting);
+         }
+
+         IPaySpaceEmployeeApi api = _paySpaceEmployeeApi;
+         var effectiveDate = new DateTime(2024, 12, 31, 22, 30, 0, DateTimeKind.Utc);
+         var result = filterEmployees
+            ? await api.EmployeeRecurringCostingAsync(_accessTokenRequest, 1, effectiveDate, employeeNumbers)
+            : await api.EmployeeRecurringCostingAsync(_accessTokenRequest, 1, effectiveDate);
+
+         result.Should().BeSameAs(expectedCosting);
+         _paySpaceApiClientMock.VerifyAll();
+         _paySpaceApiClientMock.VerifyNoOtherCalls();
+      }
+
+      [TestCase(false)]
+      [TestCase(true)]
+      public async Task EmployeeRecurringCostingSplitAsync_UsesSouthAfricanEffectiveDate(bool filterEmployees)
+      {
+         var employeeNumbers = new[] { "E001", "E002" };
+         var expectedSplits = new List<EmployeeRecurringCostingSplit>
+         {
+            new() { RecurringCostingSplitDetailId = 2147483649L, EmployeeNumber = "E001", Percentage = 75.25m }
+         };
+         const string url = "1/EmployeeRecurringCostingSplit/effective/2025-01-01";
+
+         if (filterEmployees)
+         {
+            _paySpaceApiClientMock
+               .Setup(client => client.GetListAsyncWithListFilter<EmployeeRecurringCostingSplit>(
+                  _accessTokenRequest, url, "EmployeeNumber", employeeNumbers))
+               .ReturnsAsync(expectedSplits);
+         }
+         else
+         {
+            _paySpaceApiClientMock
+               .Setup(client => client.GetListAsync<EmployeeRecurringCostingSplit>(_accessTokenRequest, url))
+               .ReturnsAsync(expectedSplits);
+         }
+
+         IPaySpaceEmployeeApi api = _paySpaceEmployeeApi;
+         var effectiveDate = new DateTime(2024, 12, 31, 22, 30, 0, DateTimeKind.Utc);
+         var result = filterEmployees
+            ? await api.EmployeeRecurringCostingSplitAsync(_accessTokenRequest, 1, effectiveDate, employeeNumbers)
+            : await api.EmployeeRecurringCostingSplitAsync(_accessTokenRequest, 1, effectiveDate);
+
+         result.Should().BeSameAs(expectedSplits);
+         _paySpaceApiClientMock.VerifyAll();
+         _paySpaceApiClientMock.VerifyNoOtherCalls();
+      }
+
       [Test]
       public async Task EmployeeEmploymentStatusAsync_WithEmployeeNumbers_UsesSouthAfricanEffectiveDate()
       {
