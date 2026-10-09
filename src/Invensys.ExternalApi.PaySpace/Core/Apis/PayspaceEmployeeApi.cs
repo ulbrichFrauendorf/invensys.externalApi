@@ -79,6 +79,64 @@ public class PaySpaceEmployeeApi(IPaySpaceApiClient payspaceApiClient)
    }
 
    /// <inheritdoc/>
+   public async Task<List<EmployeeRecurringCosting>> EmployeeRecurringCostingAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate
+   )
+   {
+      return await _payspaceApiClient.GetListAsync<EmployeeRecurringCosting>(
+         accessTokenRequest,
+         $"{companyId}/EmployeeRecurringCosting/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
+      );
+   }
+
+   /// <inheritdoc/>
+   public async Task<List<EmployeeRecurringCosting>> EmployeeRecurringCostingAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate,
+      IEnumerable<string> employeeNumbers
+   )
+   {
+      return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeeRecurringCosting>(
+         accessTokenRequest,
+         $"{companyId}/EmployeeRecurringCosting/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
+         "EmployeeNumber",
+         employeeNumbers
+      );
+   }
+
+   /// <inheritdoc/>
+   public async Task<List<EmployeeRecurringCostingSplit>> EmployeeRecurringCostingSplitAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate
+   )
+   {
+      return await _payspaceApiClient.GetListAsync<EmployeeRecurringCostingSplit>(
+         accessTokenRequest,
+         $"{companyId}/EmployeeRecurringCostingSplit/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
+      );
+   }
+
+   /// <inheritdoc/>
+   public async Task<List<EmployeeRecurringCostingSplit>> EmployeeRecurringCostingSplitAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      DateTime effectiveDate,
+      IEnumerable<string> employeeNumbers
+   )
+   {
+      return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeeRecurringCostingSplit>(
+         accessTokenRequest,
+         $"{companyId}/EmployeeRecurringCostingSplit/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
+         "EmployeeNumber",
+         employeeNumbers
+      );
+   }
+
+   /// <inheritdoc/>
    public async Task<List<EmploymentStatus>> EmployeeEmploymentStatusAllAsync(
       JwtAccessTokenRequest accessTokenRequest,
       long companyId
