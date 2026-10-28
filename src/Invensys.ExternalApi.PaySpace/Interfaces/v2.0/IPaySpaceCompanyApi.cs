@@ -3,7 +3,7 @@ using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Entities.Components;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 
-namespace Invensys.ExternalApi.PaySpace.Interfaces;
+namespace Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
 public interface IPaySpaceCompanyApi
 {

@@ -1,10 +1,13 @@
-﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Attributes;
 using Invensys.ExternalApi.PaySpace.Entities.Components;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
-namespace Invensys.ExternalApi.PaySpace.Core.Apis;
+namespace Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 
+[PaySpaceApi("v2.0", "odata")]
 public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
    : PaySpaceApiBase(payspaceApiClient),
       IPaySpacePayrollProcessingApi
@@ -16,7 +19,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
       DateTime effectiveDate
    )
    {
-      return await _payspaceApiClient.GetListAsync<EmployeePayRate>(
+      return await GetListAsync<EmployeePayRate>(
          accessTokenRequest,
          $"{companyId}/EmployeePayRate/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}"
       );
@@ -30,7 +33,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
       IEnumerable<string> employeeNumbers
    )
    {
-      return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeePayRate>(
+      return await GetListAsyncWithListFilter<EmployeePayRate>(
          accessTokenRequest,
          $"{companyId}/EmployeePayRate/effective/{PaySpaceDateHelper.FormatEffectiveDate(effectiveDate)}",
          "EmployeeNumber",
@@ -47,7 +50,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
       IEnumerable<string> employeeNumbers
    )
    {
-      return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeePensionFund>(
+      return await GetListAsyncWithListFilter<EmployeePensionFund>(
          accessTokenRequest,
          $"{companyId}/EmployeePensionFund?frequency={companyFrequencyValue}&period={companyRunValue}",
          "EmployeeNumber",
@@ -64,7 +67,7 @@ public class PaySpacePayrollProcessingApi(IPaySpaceApiClient payspaceApiClient)
       List<string> employeeNumbers
    )
    {
-      return await _payspaceApiClient.GetListAsyncWithListFilter<EmployeeComponent>(
+      return await GetListAsyncWithListFilter<EmployeeComponent>(
          accessTokenRequest,
          $"{companyId}/EmployeeComponent?frequency={companyFrequencyValue}&period={companyRunValue}",
          "EmployeeNumber",

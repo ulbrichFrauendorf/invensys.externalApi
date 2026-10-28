@@ -1,12 +1,17 @@
-﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Attributes;
 using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Entities.Components;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
-namespace Invensys.ExternalApi.PaySpace.Core.Apis;
+namespace Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 
-public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpaceCompanyApi
+[PaySpaceApi("v2.0", "odata")]
+public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient)
+   : PaySpaceApiBase(paySpaceApiClient),
+      IPaySpaceCompanyApi
 {
    /// <inheritdoc/>
    public async Task<List<CompanyFrequency>> GetCompanyFrequenciesAsync(
@@ -14,10 +19,7 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       long companyId
    )
    {
-      return await paySpaceApiClient.GetListAsync<CompanyFrequency>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/CompanyFrequency"
-      );
+      return await GetListAsync<CompanyFrequency>(accessTokenRequest, $"{companyId}/Lookup/CompanyFrequency");
    }
 
    /// <inheritdoc/>
@@ -28,7 +30,7 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       string companyRunValue
    )
    {
-      return await paySpaceApiClient.GetListAsync<PensionFundComponentCompany>(
+      return await GetListAsync<PensionFundComponentCompany>(
          accessTokenRequest,
          $"{companyId}/Lookup/PensionFundComponentCompany?frequency={companyFrequencyValue}&period={companyRunValue}"
       );
@@ -41,7 +43,7 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       string frequencyValue
    )
    {
-      return await paySpaceApiClient.GetListAsync<CompanyRun>(
+      return await GetListAsync<CompanyRun>(
          accessTokenRequest,
          $"{companyId}/Lookup/CompanyRun?frequency={frequencyValue}"
       );
@@ -56,10 +58,9 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       DateTime periodEndDate
    )
    {
-
       var url =
          $"{companyId}/Lookup/CompanyRun?frequency={frequencyValue}&$filter=PeriodStartDate ge {PaySpaceDateHelper.FormatODataDate(periodStartDate)} and PeriodEndDate le {PaySpaceDateHelper.FormatODataDate(periodEndDate)}";
-      return await paySpaceApiClient.GetListAsync<CompanyRun>(accessTokenRequest, url);
+      return await GetListAsync<CompanyRun>(accessTokenRequest, url);
    }
 
    /// <inheritdoc/>
@@ -70,7 +71,7 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       string companyRunValue
    )
    {
-      return await paySpaceApiClient.GetListAsync<ComponentCompanyDetail>(
+      return await GetListAsync<ComponentCompanyDetail>(
          accessTokenRequest,
          $"{companyId}/Lookup/ComponentCompanyDetail?frequency={companyFrequencyValue}&period={companyRunValue}"
       );
@@ -82,10 +83,7 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       long companyId
    )
    {
-      return await paySpaceApiClient.GetListAsync<OrganizationUnit>(
-         accessTokenRequest,
-         $"{companyId}/OrganizationUnit"
-      );
+      return await GetListAsync<OrganizationUnit>(accessTokenRequest, $"{companyId}/OrganizationUnit");
    }
 
    /// <inheritdoc/>
@@ -94,6 +92,6 @@ public class PaySpaceCompanyApi(IPaySpaceApiClient paySpaceApiClient) : IPaySpac
       long companyId
    )
    {
-      return await paySpaceApiClient.GetListAsync<CompanySetting>(accessTokenRequest, $"{companyId}/CompanySetting");
+      return await GetListAsync<CompanySetting>(accessTokenRequest, $"{companyId}/CompanySetting");
    }
 }

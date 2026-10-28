@@ -1,4 +1,5 @@
 ﻿using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Context;
 
@@ -12,4 +13,5 @@ public interface IPaySpaceApiContext
    IPaySpacePayslipApi PaySpacePayslipApi { get; }
    IPaySpaceIncidentApi PaySpaceIncidentApi { get; }
    IPaySpaceLoanApi PaySpaceLoanApi { get; }
+   IPaySpaceReportApi PaySpaceReportApi { get; }
 }

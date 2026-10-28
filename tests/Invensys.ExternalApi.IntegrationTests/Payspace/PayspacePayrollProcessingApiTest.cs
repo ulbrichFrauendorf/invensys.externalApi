@@ -1,4 +1,5 @@
-﻿using Invensys.ExternalApi.IntegrationTests.Helpers;
+using Invensys.ExternalApi.IntegrationTests.Helpers;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using static Invensys.ExternalApi.IntegrationTests.Testing;
 
 namespace Invensys.ExternalApi.IntegrationTests.PaySpace;
@@ -16,9 +17,7 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
          .SelectString(e => e.EmployeeNumber)
          .ToList();
 
-      var paySpaceTestClient = GetPaySpaceTestClientConfig()
-         ?.PaySpaceTestClients
-         ?.First()!;
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()?.PaySpaceTestClients?.First()!;
 
       var list = await IPaySpacePayrollProcessingApi()
          .GetEmployeeComponentsAsync(
@@ -63,10 +62,8 @@ internal class PaySpacePayrollProcessingApiTest : BaseTestFixture
    {
       var tokenResponse = await GetPaySpaceAuthTokenResponse();
 
-      var paySpaceTestClient = GetPaySpaceTestClientConfig()
-         ?.PaySpaceTestClients
-         ?.First()!;
-      
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()?.PaySpaceTestClients?.First()!;
+
       var listEmps = (
          await IPaySpaceEmployeeApi()
             .EmployeeListAsync(tokenResponse.Token, tokenResponse.CompanyIds[0], DateTime.Parse("2026-01-01"))

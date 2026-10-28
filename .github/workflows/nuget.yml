@@ -19,32 +19,23 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          global-json-file: global.json
 
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Update version in all .csproj files
-        run: |
-          for csproj in $(find . -name '*.csproj'); do
-            sed -i 's|<Version>.*</Version>|<Version>'"$VERSION"'</Version>|' "$csproj"
-          done
-
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore -p:Version="$VERSION"
 
       - name: Run tests (exclude integration)
-        run: |
-          for csproj in $(find . -name '*.csproj' ! -name '*IntegrationTests.csproj'); do
-          dotnet test "$csproj" --no-restore --verbosity normal
-          done
+        run: dotnet test tests/Invensys.ExternalApi.UnitTests/Invensys.ExternalApi.UnitTests.csproj --configuration Release --no-build --no-restore --verbosity normal
 
 
       - name: Pack NuGet packages
         run: |
           mkdir -p ./nupkg
-          for csproj in $(find . -name '*.csproj'); do
-            dotnet pack "$csproj" --configuration Release --no-restore --output ./nupkg
+          for csproj in $(find ./src -name '*.csproj'); do
+            dotnet pack "$csproj" --configuration Release --no-build --no-restore --output ./nupkg -p:Version="$VERSION"
           done
 
       - name: Publish to NuGet

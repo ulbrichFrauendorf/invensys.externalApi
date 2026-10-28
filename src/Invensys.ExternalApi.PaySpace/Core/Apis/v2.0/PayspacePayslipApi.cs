@@ -1,9 +1,12 @@
-﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Attributes;
 using Invensys.ExternalApi.PaySpace.Entities.Payslips;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
-namespace Invensys.ExternalApi.PaySpace.Core.Apis;
+namespace Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 
+[PaySpaceApi("v2.0", "odata")]
 public class PaySpacePayslipApi(IPaySpaceApiClient payspaceApiClient)
    : PaySpaceApiBase(payspaceApiClient),
       IPaySpacePayslipApi
@@ -19,13 +22,13 @@ public class PaySpacePayslipApi(IPaySpaceApiClient payspaceApiClient)
    {
       if (componentCodes != null && componentCodes.Any())
       {
-         return await _payspaceApiClient.GetListAsync<EmployeePayslip>(
+         return await GetListAsync<EmployeePayslip>(
             accessTokenRequest,
             $"{companyId}/EmployeePayslip/{year}/{month}/consolidated?componentCodes={string.Join(',', componentCodes)}"
          );
       }
 
-      return await _payspaceApiClient.GetListAsync<EmployeePayslip>(
+      return await GetListAsync<EmployeePayslip>(
          accessTokenRequest,
          $"{companyId}/EmployeePayslip/{year}/{month}/consolidated"
       );
@@ -39,7 +42,7 @@ public class PaySpacePayslipApi(IPaySpaceApiClient payspaceApiClient)
       int month
    )
    {
-      return await _payspaceApiClient.GetListAsync<EmployeePayslipLine>(
+      return await GetListAsync<EmployeePayslipLine>(
          accessTokenRequest,
          $"{companyId}/EmployeePayslipLine/{year}/{month}"
       );
@@ -56,15 +59,12 @@ public class PaySpacePayslipApi(IPaySpaceApiClient payspaceApiClient)
    {
       if (componentCodes != null && componentCodes.Any())
       {
-         return await _payspaceApiClient.GetListAsync<EmployeePayslip>(
+         return await GetListAsync<EmployeePayslip>(
             accessTokenRequest,
             $"{companyId}/EmployeePayslip/{year}/{month}?componentCodes={string.Join(',', componentCodes)}"
          );
       }
 
-      return await _payspaceApiClient.GetListAsync<EmployeePayslip>(
-         accessTokenRequest,
-         $"{companyId}/EmployeePayslip/{year}/{month}"
-      );
+      return await GetListAsync<EmployeePayslip>(accessTokenRequest, $"{companyId}/EmployeePayslip/{year}/{month}");
    }
 }

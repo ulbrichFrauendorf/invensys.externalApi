@@ -1,4 +1,5 @@
 ﻿using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Context;
 
@@ -10,9 +11,12 @@ public class PaySpaceApiContext(
    IPaySpacePayrollProcessingApi paySpacePayrollProcessingApi,
    IPaySpacePayslipApi paySpacePayslipApi,
    IPaySpaceIncidentApi paySpaceIncidentApi,
-   IPaySpaceLoanApi paySpaceLoanApi
+   IPaySpaceLoanApi paySpaceLoanApi,
+   IPaySpaceReportApi paySpaceReportApi
 ) : IPaySpaceApiContext
 {
+   public IPaySpaceReportApi PaySpaceReportApi { get; } = paySpaceReportApi;
+
    public IPaySpaceCompanyApi PaySpaceCompanyApi { get; } = paySpaceCompanyApi;
    public IPaySpaceEmployeeApi PayspaceEmployeeApi { get; } = payspaceEmployeeApi;
    public IPaySpaceLeaveApi PaySpaceLeaveApi { get; } = paySpaceLeaveApi;

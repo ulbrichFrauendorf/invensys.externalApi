@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Components;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
@@ -35,7 +35,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePayRate>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}"
+                  $"odata/v2.0/{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}"
                )
             )
             .ReturnsAsync(expectedPayRates);
@@ -61,7 +61,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsyncWithListFilter<EmployeePayRate>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}",
+                  $"odata/v2.0/{companyId}/EmployeePayRate/effective/{effectiveDate:yyyy-MM-dd}",
                   "EmployeeNumber",
                   employeeNumbers
                )
@@ -94,7 +94,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsyncWithListFilter<EmployeePensionFund>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePensionFund?frequency={frequency}&period={period}",
+                  $"odata/v2.0/{companyId}/EmployeePensionFund?frequency={frequency}&period={period}",
                   "EmployeeNumber",
                   employeeNumbers
                )
@@ -125,7 +125,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsyncWithListFilter<EmployeeComponent>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeeComponent?frequency={frequency}&period={period}",
+                  $"odata/v2.0/{companyId}/EmployeeComponent?frequency={frequency}&period={period}",
                   "EmployeeNumber",
                   employeeNumbers
                )

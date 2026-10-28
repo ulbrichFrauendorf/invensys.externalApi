@@ -1,13 +1,14 @@
 ﻿using Ardalis.GuardClauses;
-using Invensys.ExternalApi.IntegrationTests.Payspace;
-using Invensys.ExternalApi.IntegrationTests.Iserve;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.Common.Authentication.Models.Result;
+using Invensys.ExternalApi.IntegrationTests.Iserve;
+using Invensys.ExternalApi.IntegrationTests.Payspace;
+using Invensys.ExternalApi.Iserve.Core.Configuration;
+using Invensys.ExternalApi.Iserve.Interfaces;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using Invensys.ExternalApi.Sage300.Core.Models.Request;
 using Invensys.ExternalApi.Sage300.Interfaces;
-using Invensys.ExternalApi.Iserve.Interfaces;
-using Invensys.ExternalApi.Iserve.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -59,9 +60,7 @@ public partial class Testing
 
       var payspaceClient = scope.ServiceProvider.GetRequiredService<IPaySpaceAuthenticationProvider>();
 
-      var paySpaceTestClient = GetPaySpaceTestClientConfig()
-         ?.PaySpaceTestClients
-         ?.First()!;
+      var paySpaceTestClient = GetPaySpaceTestClientConfig()?.PaySpaceTestClients?.First()!;
 
       var accessTokenRequest = GetPaySpaceJwtAccessTokenRequest(paySpaceTestClient);
 
@@ -79,7 +78,9 @@ public partial class Testing
       );
    }
 
-   public static async Task<AuthenticationResult> GetSage300AuthTokenResponse(ResourceOwnerPasswordCredentialTokenRequest accessTokenRequest)
+   public static async Task<AuthenticationResult> GetSage300AuthTokenResponse(
+      ResourceOwnerPasswordCredentialTokenRequest accessTokenRequest
+   )
    {
       using var scope = s_scopeFactory.CreateScope(); //why is s_scopeFactory null here?
 
@@ -106,11 +107,35 @@ public partial class Testing
       return scope.ServiceProvider.GetRequiredService<IPaySpaceEmployeeApi>();
    }
 
+   public static IPaySpaceApiClient PaySpaceApiClient()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      return scope.ServiceProvider.GetRequiredService<IPaySpaceApiClient>();
+   }
+
    public static IPaySpacePayslipApi IPaySpacePayslipApi()
    {
       using var scope = s_scopeFactory.CreateScope();
 
       return scope.ServiceProvider.GetRequiredService<IPaySpacePayslipApi>();
+   }
+
+   public static IPaySpaceReportApi IPaySpaceReportApi()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      return scope.ServiceProvider.GetRequiredService<IPaySpaceReportApi>();
+   }
+
+   public static PaySpaceReportTestConfig GetPaySpaceReportTestConfig()
+   {
+      using var scope = s_scopeFactory.CreateScope();
+
+      return scope
+            .ServiceProvider.GetRequiredService<IConfiguration>()
+            .GetSection(nameof(PaySpaceReportTestConfig))
+            .Get<PaySpaceReportTestConfig>() ?? new PaySpaceReportTestConfig();
    }
 
    public static IPaySpacePayrollProcessingApi IPaySpacePayrollProcessingApi()
@@ -147,9 +172,7 @@ public partial class Testing
 
       var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-      var iserveTestClientConfig = config
-         .GetSection(nameof(IserveTestClientsConfig))
-         .Get<IserveTestClientsConfig>();
+      var iserveTestClientConfig = config.GetSection(nameof(IserveTestClientsConfig)).Get<IserveTestClientsConfig>();
 
       Guard.Against.Null(iserveTestClientConfig, nameof(iserveTestClientConfig));
 
@@ -162,9 +185,7 @@ public partial class Testing
 
       var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-      var iserveConfig = config
-         .GetSection(nameof(IserveConfig))
-         .Get<IserveConfig>();
+      var iserveConfig = config.GetSection(nameof(IserveConfig)).Get<IserveConfig>();
 
       Guard.Against.Null(iserveConfig, nameof(iserveConfig));
 
@@ -177,9 +198,7 @@ public partial class Testing
 
       var iserveAuthProvider = scope.ServiceProvider.GetRequiredService<IIserveAuthenticationProvider>();
 
-      var iserveTestClient = GetIserveTestClientConfig()
-         ?.IserveTestClients
-         ?.First()!;
+      var iserveTestClient = GetIserveTestClientConfig()?.IserveTestClients?.First()!;
 
       var accessTokenRequest = new ClientCredentialsTokenRequest(
          iserveTestClient.ClientId!,

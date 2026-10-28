@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Loans;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
@@ -36,7 +36,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsyncWithListFilter<EmployeeLoan>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeeLoan?frequency={frequency}&period={period}",
+                  $"odata/v2.0/{companyId}/EmployeeLoan?frequency={frequency}&period={period}",
                   "EmployeeNumber",
                   employeeNumbers
                )

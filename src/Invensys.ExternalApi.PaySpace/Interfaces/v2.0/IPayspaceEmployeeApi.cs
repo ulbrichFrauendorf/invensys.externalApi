@@ -1,10 +1,43 @@
-﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using System.Text.Json;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.PaySpace.Entities.FixedInfo;
 
-namespace Invensys.ExternalApi.PaySpace.Interfaces;
+namespace Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
+/// <summary>Reads and creates employee, employment status, position, and banking records.</summary>
+/// <remarks>
+/// Create operations throw <see cref="Core.Exceptions.PaySpaceValidationException"/> when PaySpace
+/// returns Success=false, including HTTP 2xx failures. Creation is not retried after transient failures.
+/// Each operation is independent; failures do not roll back previously created records.
+/// </remarks>
 public interface IPaySpaceEmployeeApi
 {
+   /// <summary>Creates an employee from a typed v2 request.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company in which to create the employee.</param>
+   /// <param name="createEmployeeRequest">The employee fields defined by PaySpace metadata.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The employee record returned by PaySpace.</returns>
+   Task<EmployeeOnboardingResponse> CreateEmployeeAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      CreateEmployeeRequest createEmployeeRequest,
+      CancellationToken cancellationToken = default
+   );
+
+   /// <summary>Creates a biographical employee record.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company in which to create the employee.</param>
+   /// <param name="jsonElement">A JSON object containing the employee fields.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The JSON record returned by PaySpace.</returns>
+   Task<JsonElement> CreateEmployeeAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      JsonElement jsonElement,
+      CancellationToken cancellationToken = default
+   );
+
    /// <summary>
    ///  https://api.payspace.com/odata/v1.1/:company-id/Employee({{EmployeeId}})
    /// </summary>
@@ -51,6 +84,32 @@ public interface IPaySpaceEmployeeApi
       IEnumerable<string> employeeNumbers
    );
 
+   /// <summary>Creates an employment status from a typed v2 request.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="createEmploymentStatusRequest">The employment status fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The employment status record returned by PaySpace.</returns>
+   Task<EmploymentStatusOnboardingResponse> CreateEmploymentStatusAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      CreateEmploymentStatusRequest createEmploymentStatusRequest,
+      CancellationToken cancellationToken = default
+   );
+
+   /// <summary>Creates an employment status record for an employee.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="jsonElement">A JSON object containing the employment status fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The JSON record returned by PaySpace.</returns>
+   Task<JsonElement> CreateEmploymentStatusAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      JsonElement jsonElement,
+      CancellationToken cancellationToken = default
+   );
+
    /// <summary>
    /// Get a list of employee statuses
    /// https://api.payspace.com/odata/v1.1/:company-id/EmployeeEmploymentStatus/effective/:effectivedate?$orderby={{$employment-status-field}}&$top={{$top}}&$skip={{$skip}}&$count={{$count}}
@@ -79,6 +138,32 @@ public interface IPaySpaceEmployeeApi
       IEnumerable<string> employeeNumbers
    );
 
+   /// <summary>Creates a bank detail from a typed v2 request.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="createBankDetailRequest">The bank fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The bank detail record returned by PaySpace.</returns>
+   Task<BankDetailOnboardingResponse> CreateBankDetailAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      CreateBankDetailRequest createBankDetailRequest,
+      CancellationToken cancellationToken = default
+   );
+
+   /// <summary>Creates a bank detail record for an employee.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="jsonElement">A JSON object containing the bank detail fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The JSON record returned by PaySpace.</returns>
+   Task<JsonElement> CreateBankDetailAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      JsonElement jsonElement,
+      CancellationToken cancellationToken = default
+   );
+
    /// <summary>
    /// Get a list of employee bank details
    /// https://api.payspace.com/odata/v1.1/:company-id/EmployeeBankDetail?$orderby={{$bank-detail-field}}&$top={{$top}}&$skip={{$skip}}&$count={{$count}}&$filter={{$filter}}
@@ -87,6 +172,32 @@ public interface IPaySpaceEmployeeApi
    /// <param name="companyId"></param>
    /// <returns>List of employee bank details</returns>
    Task<List<EmployeeBankDetail>> EmployeeBankDetailAsync(JwtAccessTokenRequest accessTokenRequest, long companyId);
+
+   /// <summary>Creates a position from a typed v2 request.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="createPositionRequest">The position fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The position record returned by PaySpace.</returns>
+   Task<PositionOnboardingResponse> CreatePositionAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      CreatePositionRequest createPositionRequest,
+      CancellationToken cancellationToken = default
+   );
+
+   /// <summary>Creates a position record for an employee.</summary>
+   /// <param name="accessTokenRequest">PaySpace API credentials.</param>
+   /// <param name="companyId">The company containing the employee.</param>
+   /// <param name="jsonElement">A JSON object containing the position fields and employee reference.</param>
+   /// <param name="cancellationToken">Cancels the request.</param>
+   /// <returns>The JSON record returned by PaySpace.</returns>
+   Task<JsonElement> CreatePositionAsync(
+      JwtAccessTokenRequest accessTokenRequest,
+      long companyId,
+      JsonElement jsonElement,
+      CancellationToken cancellationToken = default
+   );
 
    /// <summary>
    ///     /// Get a list of employee positions
