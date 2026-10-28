@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.FixedInfo;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using Moq;
 using NUnit.Framework;
 
@@ -31,7 +32,9 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var expectedEmployee = new Employee { EmployeeId = employeeId };
 
          _paySpaceApiClientMock
-            .Setup(client => client.GetAsync<Employee>(_accessTokenRequest, $"{companyId}/Employee/{employeeId}"))
+            .Setup(client =>
+               client.GetAsync<Employee>(_accessTokenRequest, $"odata/v2.0/{companyId}/Employee/{employeeId}")
+            )
             .ReturnsAsync(expectedEmployee);
 
          var result = await _paySpaceEmployeeApi.EmployeeAsync(_accessTokenRequest, companyId, employeeId);
@@ -46,7 +49,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var expectedEmployees = new List<Employee> { new Employee { EmployeeId = 1L } };
 
          _paySpaceApiClientMock
-            .Setup(client => client.GetListAsync<Employee>(_accessTokenRequest, $"{companyId}/Employee"))
+            .Setup(client => client.GetListAsync<Employee>(_accessTokenRequest, $"odata/v2.0/{companyId}/Employee"))
             .ReturnsAsync(expectedEmployees);
 
          var result = await _paySpaceEmployeeApi.EmployeeListAsync(_accessTokenRequest, companyId);
@@ -65,7 +68,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<Employee>(
                   _accessTokenRequest,
-                  $"{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}"
+                  $"odata/v2.0/{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}"
                )
             )
             .ReturnsAsync(expectedEmployees);
@@ -87,7 +90,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsyncWithListFilter<Employee>(
                   _accessTokenRequest,
-                  $"{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}",
+                  $"odata/v2.0/{companyId}/Employee/effective/{effectiveDate:yyyy-MM-dd}",
                   "EmployeeNumber",
                   employeeNumbers
                )
@@ -115,7 +118,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePosition>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePosition/effective/{effectiveDate:yyyy-MM-dd}"
+                  $"odata/v2.0/{companyId}/EmployeePosition/effective/{effectiveDate:yyyy-MM-dd}"
                )
             )
             .ReturnsAsync(expectedPositions);
@@ -136,7 +139,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmploymentStatus>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeeEmploymentStatus/effective/{effectiveDate:yyyy-MM-dd}"
+                  $"odata/v2.0/{companyId}/EmployeeEmploymentStatus/effective/{effectiveDate:yyyy-MM-dd}"
                )
             )
             .ReturnsAsync(expectedStatuses);
@@ -159,13 +162,19 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          {
             new() { RecurringCostingSplitHeaderId = 2147483648L, EmployeeNumber = "E001" }
          };
-         const string url = "1/EmployeeRecurringCosting/effective/2025-01-01";
+         const string url = "odata/v2.0/1/EmployeeRecurringCosting/effective/2025-01-01";
 
          if (filterEmployees)
          {
             _paySpaceApiClientMock
-               .Setup(client => client.GetListAsyncWithListFilter<EmployeeRecurringCosting>(
-                  _accessTokenRequest, url, "EmployeeNumber", employeeNumbers))
+               .Setup(client =>
+                  client.GetListAsyncWithListFilter<EmployeeRecurringCosting>(
+                     _accessTokenRequest,
+                     url,
+                     "EmployeeNumber",
+                     employeeNumbers
+                  )
+               )
                .ReturnsAsync(expectedCosting);
          }
          else
@@ -193,15 +202,26 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var employeeNumbers = new[] { "E001", "E002" };
          var expectedSplits = new List<EmployeeRecurringCostingSplit>
          {
-            new() { RecurringCostingSplitDetailId = 2147483649L, EmployeeNumber = "E001", Percentage = 75.25m }
+            new()
+            {
+               RecurringCostingSplitDetailId = 2147483649L,
+               EmployeeNumber = "E001",
+               Percentage = 75.25m
+            }
          };
-         const string url = "1/EmployeeRecurringCostingSplit/effective/2025-01-01";
+         const string url = "odata/v2.0/1/EmployeeRecurringCostingSplit/effective/2025-01-01";
 
          if (filterEmployees)
          {
             _paySpaceApiClientMock
-               .Setup(client => client.GetListAsyncWithListFilter<EmployeeRecurringCostingSplit>(
-                  _accessTokenRequest, url, "EmployeeNumber", employeeNumbers))
+               .Setup(client =>
+                  client.GetListAsyncWithListFilter<EmployeeRecurringCostingSplit>(
+                     _accessTokenRequest,
+                     url,
+                     "EmployeeNumber",
+                     employeeNumbers
+                  )
+               )
                .ReturnsAsync(expectedSplits);
          }
          else
@@ -228,17 +248,22 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var employeeNumbers = new[] { "E001" };
          var expectedStatuses = new List<EmploymentStatus> { new() { EmployeeNumber = "E001" } };
          _paySpaceApiClientMock
-            .Setup(client => client.GetListAsyncWithListFilter<EmploymentStatus>(
-               _accessTokenRequest,
-               "1/EmployeeEmploymentStatus/effective/2025-01-01",
-               "EmployeeNumber",
-               employeeNumbers))
+            .Setup(client =>
+               client.GetListAsyncWithListFilter<EmploymentStatus>(
+                  _accessTokenRequest,
+                  "odata/v2.0/1/EmployeeEmploymentStatus/effective/2025-01-01",
+                  "EmployeeNumber",
+                  employeeNumbers
+               )
+            )
             .ReturnsAsync(expectedStatuses);
 
          var result = await _paySpaceEmployeeApi.EmployeeEmploymentStatusAsync(
-            _accessTokenRequest, 1,
+            _accessTokenRequest,
+            1,
             new DateTime(2024, 12, 31, 22, 30, 0, DateTimeKind.Utc),
-            employeeNumbers);
+            employeeNumbers
+         );
 
          result.Should().BeEquivalentTo(expectedStatuses);
          _paySpaceApiClientMock.VerifyAll();
@@ -252,7 +277,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<EmployeeBankDetail>(_accessTokenRequest, $"{companyId}/EmployeeBankDetail")
+               client.GetListAsync<EmployeeBankDetail>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/EmployeeBankDetail"
+               )
             )
             .ReturnsAsync(expectedBankDetails);
 
@@ -270,7 +298,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<Address>(_accessTokenRequest, $"{companyId}/EmployeeAddress/{employeeNumber}")
+               client.GetListAsync<Address>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/EmployeeAddress/{employeeNumber}"
+               )
             )
             .ReturnsAsync(expectedAddresses);
 

@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Incidents;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
@@ -31,7 +31,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<EmployeeIncident>(_accessTokenRequest, $"{companyId}/EmployeeIncident")
+               client.GetListAsync<EmployeeIncident>(_accessTokenRequest, $"odata/v2.0/{companyId}/EmployeeIncident")
             )
             .ReturnsAsync(expectedIncidents);
 

@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Leave;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
@@ -38,7 +38,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeeLeaveApplication>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeeLeaveApplication/{year}/{month}"
+                  $"odata/v2.0/{companyId}/EmployeeLeaveApplication/{year}/{month}"
                )
             )
             .ReturnsAsync(expectedApplications);

@@ -1,10 +1,13 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Attributes;
 using Invensys.ExternalApi.PaySpace.Entities.Leave;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
-namespace Invensys.ExternalApi.PaySpace.Core.Apis;
+namespace Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 
+[PaySpaceApi("v2.0", "odata")]
 public class PaySpaceLeaveApi(IPaySpaceApiClient payspaceApiClient)
    : PaySpaceApiBase(payspaceApiClient),
       IPaySpaceLeaveApi
@@ -16,10 +19,7 @@ public class PaySpaceLeaveApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<EmployeeLeaveApplication>(
-         accessTokenRequest,
-         $"{companyId}/EmployeeLeaveApplication"
-      );
+      return await GetListAsync<EmployeeLeaveApplication>(accessTokenRequest, $"{companyId}/EmployeeLeaveApplication");
    }
 
    /// <inheritdoc/>
@@ -30,12 +30,11 @@ public class PaySpaceLeaveApi(IPaySpaceApiClient payspaceApiClient)
       int month
    )
    {
-      return await _payspaceApiClient.GetListAsync<EmployeeLeaveApplication>(
+      return await GetListAsync<EmployeeLeaveApplication>(
          accessTokenRequest,
          $"{companyId}/EmployeeLeaveApplication/{year}/{month}"
       );
    }
-
 
    private static string BuildODataFilter(DateTime startDate, DateTime endDate)
    {

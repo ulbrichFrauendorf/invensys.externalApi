@@ -2,11 +2,12 @@
 using Ardalis.GuardClauses;
 using Invensys.ExternalApi.Common.Http.Handlers;
 using Invensys.ExternalApi.PaySpace.Core;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Core.Authentication;
 using Invensys.ExternalApi.PaySpace.Core.Configuration;
 using Invensys.ExternalApi.PaySpace.Core.Context;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -25,13 +26,20 @@ public static class DependencyInjection
 
       Guard.Against.Null(paySpaceConfig, nameof(paySpaceConfig));
 
+      var apiBaseUri = new Uri(paySpaceConfig.ApiBaseUrl, UriKind.Absolute);
+
       services
-         .AddHttpClient(
-            PaySpaceHttpClient.PaySpaceRateLimitedApi,
-            client => client.BaseAddress = new Uri(paySpaceConfig.ApiBaseUrl)
+         .AddHttpClient(PaySpaceHttpClient.PaySpaceRateLimitedApi, client => client.BaseAddress = apiBaseUri)
+         .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false })
+         // Reads and writes share the limiter, but only GETs receive transient/rate-limit retries.
+         .AddPolicyHandler(request =>
+            request.Method == HttpMethod.Get ? RateLimitPolicy : Policy.NoOpAsync<HttpResponseMessage>()
          )
-         .AddPolicyHandler(RateLimitPolicy)
          .AddHttpMessageHandler(() => new RateLimitingHandler(50, 30));
+
+      services
+         .AddHttpClient(PaySpaceHttpClient.PaySpaceReportDownload, client => client.BaseAddress = apiBaseUri)
+         .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
 
       //Core
       services.AddTransient<IPaySpaceAuthenticationProvider, PaySpaceAuthenticationProvider>(); //Implements IAuthenticationProvider<GroupCompany[]> From Api common
@@ -44,6 +52,9 @@ public static class DependencyInjection
       services.AddTransient<IPaySpaceIncidentApi, PaySpaceIncidentApi>();
       services.AddTransient<IPaySpaceLoanApi, PaySpaceLoanApi>();
       services.AddTransient<IPaySpacePayrollProcessingApi, PaySpacePayrollProcessingApi>();
+
+      services.AddTransient<IPaySpaceReportApi, PaySpaceReportApi>();
+
       services.AddTransient<IPaySpaceApiContext, PaySpaceApiContext>();
       services.AddTransient<IPaySpaceApiAuthenticationService, PaySpaceApiAuthenticationService>();
 

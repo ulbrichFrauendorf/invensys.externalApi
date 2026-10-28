@@ -5,6 +5,7 @@ using Invensys.ExternalApi.PaySpace.Core.Authentication;
 using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using Moq;
 using NUnit.Framework;
 

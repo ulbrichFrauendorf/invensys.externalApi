@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Company;
 using Invensys.ExternalApi.PaySpace.Entities.Components;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
@@ -33,7 +33,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<CompanyFrequency>(_accessTokenRequest, $"{companyId}/Lookup/CompanyFrequency")
+               client.GetListAsync<CompanyFrequency>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/CompanyFrequency"
+               )
             )
             .ReturnsAsync(expectedFrequencies);
 
@@ -49,7 +52,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<CompanyFrequency>(_accessTokenRequest, $"{companyId}/Lookup/CompanyFrequency")
+               client.GetListAsync<CompanyFrequency>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/CompanyFrequency"
+               )
             )
             .ReturnsAsync(new List<CompanyFrequency>());
 
@@ -65,7 +71,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<CompanyFrequency>(_accessTokenRequest, $"{companyId}/Lookup/CompanyFrequency")
+               client.GetListAsync<CompanyFrequency>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/CompanyFrequency"
+               )
             )
             .ThrowsAsync(new Exception("API Error"));
 
@@ -88,7 +97,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<PensionFundComponentCompany>(
                   _accessTokenRequest,
-                  $"{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
+                  $"odata/v2.0/{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
                )
             )
             .ReturnsAsync(expectedData);
@@ -114,7 +123,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<PensionFundComponentCompany>(
                   _accessTokenRequest,
-                  $"{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
+                  $"odata/v2.0/{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
                )
             )
             .ReturnsAsync(new List<PensionFundComponentCompany>());
@@ -140,7 +149,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<PensionFundComponentCompany>(
                   _accessTokenRequest,
-                  $"{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
+                  $"odata/v2.0/{companyId}/Lookup/PensionFundComponentCompany?frequency={frequency}&period={period}"
                )
             )
             .ThrowsAsync(new Exception("API Error"));
@@ -168,7 +177,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"{companyId}/OrganizationUnit")
+               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"odata/v2.0/{companyId}/OrganizationUnit")
             )
             .ReturnsAsync(expectedUnits);
 
@@ -184,7 +193,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"{companyId}/OrganizationUnit")
+               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"odata/v2.0/{companyId}/OrganizationUnit")
             )
             .ReturnsAsync(new List<OrganizationUnit>());
 
@@ -200,7 +209,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"{companyId}/OrganizationUnit")
+               client.GetListAsync<OrganizationUnit>(_accessTokenRequest, $"odata/v2.0/{companyId}/OrganizationUnit")
             )
             .ThrowsAsync(new Exception("API Error"));
 
@@ -218,7 +227,9 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var expectedSettings = new List<CompanySetting> { new() { Code = "CS001" } };
 
          _paySpaceApiClientMock
-            .Setup(client => client.GetListAsync<CompanySetting>(_accessTokenRequest, $"{companyId}/CompanySetting"))
+            .Setup(client =>
+               client.GetListAsync<CompanySetting>(_accessTokenRequest, $"odata/v2.0/{companyId}/CompanySetting")
+            )
             .ReturnsAsync(expectedSettings);
 
          var result = await _paySpaceCompanyApi.CompanySettingsAsync(_accessTokenRequest, companyId);
@@ -232,7 +243,9 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var companyId = 1L;
 
          _paySpaceApiClientMock
-            .Setup(client => client.GetListAsync<CompanySetting>(_accessTokenRequest, $"{companyId}/CompanySetting"))
+            .Setup(client =>
+               client.GetListAsync<CompanySetting>(_accessTokenRequest, $"odata/v2.0/{companyId}/CompanySetting")
+            )
             .ReturnsAsync(new List<CompanySetting>());
 
          var result = await _paySpaceCompanyApi.CompanySettingsAsync(_accessTokenRequest, companyId);
@@ -246,7 +259,9 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
          var companyId = 1L;
 
          _paySpaceApiClientMock
-            .Setup(client => client.GetListAsync<CompanySetting>(_accessTokenRequest, $"{companyId}/CompanySetting"))
+            .Setup(client =>
+               client.GetListAsync<CompanySetting>(_accessTokenRequest, $"odata/v2.0/{companyId}/CompanySetting")
+            )
             .ThrowsAsync(new Exception("API Error"));
 
          await FluentActions

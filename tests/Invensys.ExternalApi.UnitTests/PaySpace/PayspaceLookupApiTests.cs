@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
@@ -31,7 +31,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"{companyId}/Lookup/CompanyPensionFund")
+               client.GetListAsync<GenLookupValue>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/CompanyPensionFund"
+               )
             )
             .ReturnsAsync(expectedPensionFunds);
 
@@ -48,7 +51,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"{companyId}/Lookup/NatureOfPerson")
+               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"odata/v2.0/{companyId}/Lookup/NatureOfPerson")
             )
             .ReturnsAsync(expectedNatureOfPersons);
 
@@ -65,7 +68,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"{companyId}/Lookup/OrganizationLevel")
+               client.GetListAsync<GenLookupValue>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/OrganizationLevel"
+               )
             )
             .ReturnsAsync(expectedOrganizationLevels);
 
@@ -82,7 +88,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"{companyId}/Lookup/OrganizationGroup")
+               client.GetListAsync<GenLookupValue>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/OrganizationGroup"
+               )
             )
             .ReturnsAsync(expectedOrganizationGroups);
 
@@ -99,7 +108,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<GenLookupValue>(_accessTokenRequest, $"{companyId}/Lookup/OrganizationCategory")
+               client.GetListAsync<GenLookupValue>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/Lookup/OrganizationCategory"
+               )
             )
             .ReturnsAsync(expectedOrganizationCategories);
 

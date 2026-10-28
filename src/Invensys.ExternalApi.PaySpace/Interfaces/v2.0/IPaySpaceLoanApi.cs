@@ -1,7 +1,7 @@
 ﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.PaySpace.Entities.Loans;
 
-namespace Invensys.ExternalApi.PaySpace.Interfaces;
+namespace Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
 public interface IPaySpaceLoanApi
 {

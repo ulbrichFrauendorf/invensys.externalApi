@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
-using Invensys.ExternalApi.PaySpace.Core.Apis;
+using Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 using Invensys.ExternalApi.PaySpace.Entities.Payslips;
 using Invensys.ExternalApi.PaySpace.Interfaces;
 using Moq;
@@ -35,7 +35,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePayslip>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayslip/{year}/{month}/consolidated"
+                  $"odata/v2.0/{companyId}/EmployeePayslip/{year}/{month}/consolidated"
                )
             )
             .ReturnsAsync(expectedPayslips);
@@ -63,7 +63,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePayslip>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayslip/{year}/{month}/consolidated?componentCodes={string.Join(',', componentCodes)}"
+                  $"odata/v2.0/{companyId}/EmployeePayslip/{year}/{month}/consolidated?componentCodes={string.Join(',', componentCodes)}"
                )
             )
             .ReturnsAsync(expectedPayslips);
@@ -91,7 +91,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePayslipLine>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayslipLine/{year}/{month}"
+                  $"odata/v2.0/{companyId}/EmployeePayslipLine/{year}/{month}"
                )
             )
             .ReturnsAsync(expectedPayslipLines);
@@ -116,7 +116,10 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
 
          _paySpaceApiClientMock
             .Setup(client =>
-               client.GetListAsync<EmployeePayslip>(_accessTokenRequest, $"{companyId}/EmployeePayslip/{year}/{month}")
+               client.GetListAsync<EmployeePayslip>(
+                  _accessTokenRequest,
+                  $"odata/v2.0/{companyId}/EmployeePayslip/{year}/{month}"
+               )
             )
             .ReturnsAsync(expectedPayslips);
 
@@ -138,7 +141,7 @@ namespace Invensys.ExternalApi.UnitTests.PaySpace
             .Setup(client =>
                client.GetListAsync<EmployeePayslip>(
                   _accessTokenRequest,
-                  $"{companyId}/EmployeePayslip/{year}/{month}?componentCodes={string.Join(',', componentCodes)}"
+                  $"odata/v2.0/{companyId}/EmployeePayslip/{year}/{month}?componentCodes={string.Join(',', componentCodes)}"
                )
             )
             .ReturnsAsync(expectedPayslips);

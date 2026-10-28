@@ -1,4 +1,5 @@
-﻿using static Invensys.ExternalApi.IntegrationTests.Testing;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
+using static Invensys.ExternalApi.IntegrationTests.Testing;
 
 namespace Invensys.ExternalApi.IntegrationTests.PaySpace;
 
@@ -35,8 +36,7 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
       // Run for each company to ensure data is returned
       foreach (var companyId in tokenResponse.CompanyIds)
       {
-         var list = await IPaySpaceEmployeeApi()
-            .EmployeeEmploymentStatusAllAsync(tokenResponse.Token, companyId);
+         var list = await IPaySpaceEmployeeApi().EmployeeEmploymentStatusAllAsync(tokenResponse.Token, companyId);
          list.Should().NotBeNull();
          list.Should().NotBeEmpty();
          list.Should().HaveCountGreaterThanOrEqualTo(10);
@@ -76,21 +76,25 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty("the test company must have recurring costing records at the effective date");
-      list.Should().AllSatisfy(costing =>
-      {
-         costing.RecurringCostingSplitHeaderId.Should().BeGreaterThan(0);
-         costing.EmployeeNumber.Should().NotBeNullOrWhiteSpace();
-         costing.RecurringCostingSplitDetails.Should().NotBeNull();
-      });
+      list.Should()
+         .AllSatisfy(costing =>
+         {
+            costing.RecurringCostingSplitHeaderId.Should().BeGreaterThan(0);
+            costing.EmployeeNumber.Should().NotBeNullOrWhiteSpace();
+            costing.RecurringCostingSplitDetails.Should().NotBeNull();
+         });
 
       var employeeNumbers = list.Select(costing => costing.EmployeeNumber!).Distinct().Take(2).ToArray();
       var filteredList = await employeeApi.EmployeeRecurringCostingAsync(
-         tokenResponse.Token, companyId, TestDate, employeeNumbers);
+         tokenResponse.Token,
+         companyId,
+         TestDate,
+         employeeNumbers
+      );
 
       filteredList.Should().NotBeEmpty();
       filteredList.Should().OnlyContain(costing => employeeNumbers.Contains(costing.EmployeeNumber!));
-      filteredList.Should().BeEquivalentTo(
-         list.Where(costing => employeeNumbers.Contains(costing.EmployeeNumber!)));
+      filteredList.Should().BeEquivalentTo(list.Where(costing => employeeNumbers.Contains(costing.EmployeeNumber!)));
    }
 
    [Test]
@@ -103,19 +107,23 @@ internal class PaySpaceEmployeeApiTest : BaseTestFixture
 
       list.Should().NotBeNull();
       list.Should().NotBeEmpty("the test company must have recurring costing splits at the effective date");
-      list.Should().AllSatisfy(split =>
-      {
-         split.RecurringCostingSplitDetailId.Should().BeGreaterThan(0);
-         split.EmployeeNumber.Should().NotBeNullOrWhiteSpace();
-      });
+      list.Should()
+         .AllSatisfy(split =>
+         {
+            split.RecurringCostingSplitDetailId.Should().BeGreaterThan(0);
+            split.EmployeeNumber.Should().NotBeNullOrWhiteSpace();
+         });
 
       var employeeNumbers = list.Select(split => split.EmployeeNumber!).Distinct().Take(2).ToArray();
       var filteredList = await employeeApi.EmployeeRecurringCostingSplitAsync(
-         tokenResponse.Token, companyId, TestDate, employeeNumbers);
+         tokenResponse.Token,
+         companyId,
+         TestDate,
+         employeeNumbers
+      );
 
       filteredList.Should().NotBeEmpty();
       filteredList.Should().OnlyContain(split => employeeNumbers.Contains(split.EmployeeNumber!));
-      filteredList.Should().BeEquivalentTo(
-         list.Where(split => employeeNumbers.Contains(split.EmployeeNumber!)));
+      filteredList.Should().BeEquivalentTo(list.Where(split => employeeNumbers.Contains(split.EmployeeNumber!)));
    }
 }

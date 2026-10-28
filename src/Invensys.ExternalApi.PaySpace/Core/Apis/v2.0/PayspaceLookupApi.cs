@@ -1,9 +1,12 @@
-﻿using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.Common.Authentication.Models.Request;
+using Invensys.ExternalApi.PaySpace.Core.Attributes;
 using Invensys.ExternalApi.PaySpace.Entities.Lookups;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
-namespace Invensys.ExternalApi.PaySpace.Core.Apis;
+namespace Invensys.ExternalApi.PaySpace.Core.Apis.V2_0;
 
+[PaySpaceApi("v2.0", "odata")]
 public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
    : PaySpaceApiBase(payspaceApiClient),
       IPaySpaceLookupApi
@@ -14,10 +17,7 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<GenLookupValue>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/CompanyPensionFund"
-      );
+      return await GetListAsync<GenLookupValue>(accessTokenRequest, $"{companyId}/Lookup/CompanyPensionFund");
    }
 
    /// <inheritdoc/>
@@ -29,7 +29,7 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       IEnumerable<string> lookupFilter
    )
    {
-      return await _payspaceApiClient.GetListAsyncWithListFilter<GenLookupValue>(
+      return await GetListAsyncWithListFilter<GenLookupValue>(
          accessTokenRequest,
          $"{companyId}/Lookup/CompanyPensionFundLink?frequency={companyFrequencyValue}&period={companyRunValue}",
          "Value",
@@ -43,10 +43,7 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<GenLookupValue>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/NatureOfPerson"
-      );
+      return await GetListAsync<GenLookupValue>(accessTokenRequest, $"{companyId}/Lookup/NatureOfPerson");
    }
 
    /// <inheritdoc/>
@@ -55,10 +52,7 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<GenLookupValue>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/OrganizationLevel"
-      );
+      return await GetListAsync<GenLookupValue>(accessTokenRequest, $"{companyId}/Lookup/OrganizationLevel");
    }
 
    /// <inheritdoc/>
@@ -67,10 +61,7 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<GenLookupValue>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/OrganizationGroup"
-      );
+      return await GetListAsync<GenLookupValue>(accessTokenRequest, $"{companyId}/Lookup/OrganizationGroup");
    }
 
    /// <inheritdoc/>
@@ -79,9 +70,6 @@ public class PaySpaceLookupApi(IPaySpaceApiClient payspaceApiClient)
       long companyId
    )
    {
-      return await _payspaceApiClient.GetListAsync<GenLookupValue>(
-         accessTokenRequest,
-         $"{companyId}/Lookup/OrganizationCategory"
-      );
+      return await GetListAsync<GenLookupValue>(accessTokenRequest, $"{companyId}/Lookup/OrganizationCategory");
    }
 }

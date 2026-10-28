@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Invensys.ExternalApi.Iserve;
+using Invensys.ExternalApi.PaySpace;
+using Invensys.ExternalApi.Sage300;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Invensys.ExternalApi.PaySpace;
-using Invensys.ExternalApi.Sage300;
-using Invensys.ExternalApi.Iserve;
 using Testing.Emulator;
 
 namespace Invensys.ExternalApi.IntegrationTests;
@@ -18,6 +18,14 @@ public class CustomWebApplicationFactory() : WebApplicationFactory<Program>
       {
          config.AddJsonFile("appsettings.json").AddEnvironmentVariables();
          config.AddJsonFile("appsettings.development.json").AddEnvironmentVariables();
+
+         config.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+               ["PaySpaceConfig:ApiBaseUrl"] = "https://apistaging.payspace.com",
+               ["PaySpaceConfig:AuthorizationUrl"] = "https://staging-identity.yourhcm.com/connect/token"
+            }
+         );
       });
 
       builder.ConfigureTestServices(services =>

@@ -2,6 +2,7 @@
 using Invensys.ExternalApi.Common.Authentication.Models.Request;
 using Invensys.ExternalApi.PaySpace.Core.Authentication.Models;
 using Invensys.ExternalApi.PaySpace.Interfaces;
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 
 namespace Invensys.ExternalApi.PaySpace.Core.Authentication;
 

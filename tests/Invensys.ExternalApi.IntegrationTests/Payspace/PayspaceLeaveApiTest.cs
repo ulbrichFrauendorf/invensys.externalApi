@@ -1,3 +1,4 @@
+using Invensys.ExternalApi.PaySpace.Interfaces.V2_0;
 using static Invensys.ExternalApi.IntegrationTests.Testing;
 
 namespace Invensys.ExternalApi.IntegrationTests.PaySpace;
